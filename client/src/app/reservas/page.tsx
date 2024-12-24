@@ -70,7 +70,7 @@ export default function Reservas() {
   const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined);
   const [statusFilter, setStatusFilter] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
 
   const { toast } = useToast();
 
@@ -121,115 +121,113 @@ export default function Reservas() {
   }, []);
 
   return (
-    <div className="pt-8 w-4/5 mx-auto overflow-hidden flex flex-col justify-between h-screen">
-      <main className="flex-1">
-        <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex items-center gap-4 sm:flex-row">
-              <Avatar className="hidden sm:block">
-                <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
-              </Avatar>
-              <div>
-                <h1 className="text-2xl font-bold">Reservas</h1>
-                <div className="text-sm text-read">
-                  {user?.role.name ? (
-                    <span>
-                      {Role.label[user.role.name as keyof typeof Role.label]}
-                    </span>
-                  ) : (
-                    <Skeleton className="w-24 h-3" />
-                  )}
-                </div>
+    <div className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen">
+      <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center gap-4 sm:flex-row">
+            <Avatar className="hidden sm:block">
+              <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
+            </Avatar>
+            <div>
+              <h1 className="text-2xl font-bold">Reservas</h1>
+              <div className="text-sm text-read">
+                {user?.role.name ? (
+                  <span>
+                    {Role.label[user.role.name as keyof typeof Role.label]}
+                  </span>
+                ) : (
+                  <Skeleton className="w-24 h-3" />
+                )}
               </div>
             </div>
-            <Button className="hidden sm:block">
-              <Modal
-                title="Adicionar Nova Reserva"
-                triggerText="+ Nova Reserva"
-                isOpen={isModalOpen}
-                onOpenChange={setIsModalOpen}
-              >
-                <BookingRegistrationForm
-                  onCloseModal={handleModalClose}
-                  onBookingCreated={listBookings}
-                />
-              </Modal>
-            </Button>
-            <Button className="block sm:hidden">
-              <Modal
-                title="Adicionar Nova Reserva"
-                triggerText="+"
-                isOpen={isModalOpen}
-                onOpenChange={setIsModalOpen}
-              >
-                <BookingRegistrationForm
-                  onCloseModal={handleModalClose}
-                  onBookingCreated={listBookings}
-                />
-              </Modal>
-            </Button>
           </div>
+          <Button className="hidden sm:block">
+            <Modal
+              title="Adicionar Nova Reserva"
+              triggerText="+ Nova Reserva"
+              isOpen={isModalOpen}
+              onOpenChange={setIsModalOpen}
+            >
+              <BookingRegistrationForm
+                onCloseModal={handleModalClose}
+                onBookingCreated={listBookings}
+              />
+            </Modal>
+          </Button>
+          <Button className="block sm:hidden">
+            <Modal
+              title="Adicionar Nova Reserva"
+              triggerText="+"
+              isOpen={isModalOpen}
+              onOpenChange={setIsModalOpen}
+            >
+              <BookingRegistrationForm
+                onCloseModal={handleModalClose}
+                onBookingCreated={listBookings}
+              />
+            </Modal>
+          </Button>
+        </div>
 
-          <div className="flex gap-4 relative">
-            <SearchIcon
-              className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
-            />
-            <SearchFilter
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              placeholder="Buscar por sala ou responsável"
-            />
-            <div className="relative">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600"
-                  >
-                    {dateFilter ? (
-                      format(dateFilter, "PPP", { locale: ptBR })
-                    ) : (
-                      <span className="hidden sm:block">
-                        Selecione uma data
-                      </span>
-                    )}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dateFilter}
-                    onSelect={setDateFilter}
-                    initialFocus
-                    locale={ptBR}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="relative">
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
-                  <FilterIcon
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={20}
-                  />
-                  <SelectValue placeholder="Todos" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Todos">Todos os status</SelectItem>
-                  <SelectItem value="PENDING">Pendente</SelectItem>
-                  <SelectItem value="CONFIRMED">Confirmado</SelectItem>
-                  <SelectItem value="ACTIVE">Ativo</SelectItem>
-                  <SelectItem value="COMPLETED">Completado</SelectItem>
-                  <SelectItem value="CANCELLED">Cancelado</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+        <div className="flex gap-4 relative">
+          <SearchIcon
+            className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={20}
+          />
+          <SearchFilter
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            placeholder="Buscar por sala ou responsável"
+          />
+          <div className="relative">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600"
+                >
+                  {dateFilter ? (
+                    format(dateFilter, "PPP", { locale: ptBR })
+                  ) : (
+                    <span className="hidden sm:block">Selecione uma data</span>
+                  )}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={dateFilter}
+                  onSelect={setDateFilter}
+                  initialFocus
+                  locale={ptBR}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
-        </header>
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="relative">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
+                <FilterIcon
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={20}
+                />
+                <SelectValue placeholder="Todos" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Todos">Todos os status</SelectItem>
+                <SelectItem value="PENDING">Pendente</SelectItem>
+                <SelectItem value="CONFIRMED">Confirmado</SelectItem>
+                <SelectItem value="ACTIVE">Ativo</SelectItem>
+                <SelectItem value="COMPLETED">Completado</SelectItem>
+                <SelectItem value="CANCELLED">Cancelado</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1 overflow-y-auto">
+        <div className="bg-white rounded-lg shadow-sm">
           <GenericTable
             columns={[
               { header: "Sala", accessor: "room" },
@@ -342,18 +340,18 @@ export default function Reservas() {
             }))}
           />
         </div>
-        <div className="flex flex-col-reverse gap-4 sm:flex-row justify-between items-center mt-4">
-          <p className="text-sm text-gray-500">
-            Exibindo {paginatedBookings.length} de {filteredBookings.length}{" "}
-            reservas
-          </p>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </div>
       </main>
+      <div className="flex flex-col-reverse gap-4 sm:flex-row justify-between items-center mt-4">
+        <p className="text-sm text-gray-500">
+          Exibindo {paginatedBookings.length} de {filteredBookings.length}{" "}
+          reservas
+        </p>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
       <Footer />
     </div>
   );

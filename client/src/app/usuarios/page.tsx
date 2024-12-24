@@ -108,65 +108,65 @@ export default function Usuarios() {
   }, []);
 
   return (
-    <div className="pt-8 w-4/5 mx-auto overflow-hidden flex flex-col justify-between h-screen">
-      <main className="flex-1">
-        <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex items-center gap-4">
-              <Avatar>
-                <AvatarFallback>{user?.name[0]}</AvatarFallback>
-              </Avatar>
-              <div>
-                <h1 className="text-2xl font-bold">Usuários</h1>
-                <div className="text-sm text-read">
-                  {user?.role.name ? (
-                    <span>
-                      {Role.label[user.role.name as keyof typeof Role.label]}
-                    </span>
-                  ) : (
-                    <Skeleton className="w-24 h-3" />
-                  )}
-                </div>
+    <div className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen">
+      <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center gap-4">
+            <Avatar>
+              <AvatarFallback>{user?.name[0]}</AvatarFallback>
+            </Avatar>
+            <div>
+              <h1 className="text-2xl font-bold">Usuários</h1>
+              <div className="text-sm text-read">
+                {user?.role.name ? (
+                  <span>
+                    {Role.label[user.role.name as keyof typeof Role.label]}
+                  </span>
+                ) : (
+                  <Skeleton className="w-24 h-3" />
+                )}
               </div>
             </div>
-            <Button>
-              <Modal
-                title="Adicionar Novo Usuário"
-                triggerText="+ Novo Usuário"
-                isOpen={isModalOpen}
-                onOpenChange={setIsModalOpen}
-              >
-                <UserRegistrationForm onCloseModal={handleModalClose} />
-              </Modal>
-            </Button>
           </div>
-          <div className="flex gap-4">
-            <div className="flex gap-4 relative flex-1">
-              <SearchIcon
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={20}
-              />
-              <SearchFilter
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                placeholder="Buscar por código, nome ou e-mail"
-              />
-            </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Todos" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Todos">Todos os cargos</SelectItem>
-                {roles.map((role) => (
-                  <SelectItem key={role.id} value={role.name}>
-                    {Role.label[role.name as keyof typeof Role.label]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <Button>
+            <Modal
+              title="Adicionar Novo Usuário"
+              triggerText="+ Novo Usuário"
+              isOpen={isModalOpen}
+              onOpenChange={setIsModalOpen}
+            >
+              <UserRegistrationForm onCloseModal={handleModalClose} />
+            </Modal>
+          </Button>
+        </div>
+        <div className="flex gap-4">
+          <div className="flex gap-4 relative flex-1">
+            <SearchIcon
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+            <SearchFilter
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              placeholder="Buscar por código, nome ou e-mail"
+            />
           </div>
-        </header>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Todos" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Todos">Todos os cargos</SelectItem>
+              {roles.map((role) => (
+                <SelectItem key={role.id} value={role.name}>
+                  {Role.label[role.name as keyof typeof Role.label]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </header>
+      <main className="flex-1 overflow-y-auto">
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <GenericTable
             columns={[
@@ -239,17 +239,17 @@ export default function Usuarios() {
             }))}
           />
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <p className="text-sm text-gray-500">
-            Exibindo {paginatedUsers.length} de {filteredUsers.length} usuários
-          </p>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </div>
       </main>
+      <div className="flex justify-between items-center mt-4">
+        <p className="text-sm text-gray-500">
+          Exibindo {paginatedUsers.length} de {filteredUsers.length} usuários
+        </p>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
       <Footer />
     </div>
   );

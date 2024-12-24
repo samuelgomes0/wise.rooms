@@ -157,6 +157,7 @@ interface AuditProps {
   searchTerm: string;
   dateFilter: Date;
   actionFilter: string;
+  entityFilter: string;
   currentPage: number;
   itemsPerPage: number;
 }
@@ -166,26 +167,31 @@ function auditLogs({
   searchTerm,
   dateFilter,
   actionFilter,
+  entityFilter,
   currentPage,
   itemsPerPage,
 }: AuditProps) {
   const lowerSearchTerm = searchTerm.toLowerCase();
 
-  const filteredAuditLogs = auditLogs.filter((log) => {
+  const filteredAuditLogs = auditLogs.filter((auditLog) => {
     const matchesSearch =
-      log.user.name.toLowerCase().includes(lowerSearchTerm) ||
-      log.action.toLowerCase().includes(lowerSearchTerm) ||
-      log.entity.toLowerCase().includes(lowerSearchTerm);
+      auditLog.id.toString().toLowerCase().includes(lowerSearchTerm) ||
+      auditLog.user.name.toLowerCase().includes(lowerSearchTerm) ||
+      auditLog.action.toLowerCase().includes(lowerSearchTerm) ||
+      auditLog.entity.toLowerCase().includes(lowerSearchTerm);
 
     const matchesDate =
       !dateFilter ||
-      parseISO(log.createdAt.toString()).toDateString() ===
+      parseISO(auditLog.createdAt.toString()).toDateString() ===
         dateFilter.toDateString();
 
     const matchesAction =
-      actionFilter === "Todas" || log.action === actionFilter;
+      actionFilter === "Todas" || auditLog.action === actionFilter;
 
-    return matchesSearch && matchesDate && matchesAction;
+    const matchesEntity =
+      entityFilter === "Todas" || auditLog.entity === entityFilter;
+
+    return matchesSearch && matchesDate && matchesAction && matchesEntity;
   });
 
   const totalPages = Math.ceil(filteredAuditLogs.length / itemsPerPage);

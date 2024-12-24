@@ -4,8 +4,9 @@ interface IAuditLog {
     name: string;
   };
   action: string;
+  type: string;
   entity: string;
-  resource: string;
+  entityId: number;
   createdAt: string;
 }
 

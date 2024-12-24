@@ -83,45 +83,4 @@ const getActionBadge = (action: string) => {
   }
 };
 
-const getEntityBadge = (entity: string) => {
-  switch (entity) {
-    case "USER":
-      return (
-        <Badge
-          variant="default"
-          className="bg-purple-200 text-purple-800 border-none"
-        >
-          Usuário
-        </Badge>
-      );
-    case "ROOM":
-      return (
-        <Badge
-          variant="default"
-          className="bg-teal-200 text-teal-800 border-none"
-        >
-          Sala
-        </Badge>
-      );
-    case "RESOURCE":
-      return (
-        <Badge
-          variant="default"
-          className="bg-pink-200 text-pink-800 border-none"
-        >
-          Recurso
-        </Badge>
-      );
-    case "BOOKING":
-      return (
-        <Badge
-          variant="default"
-          className="bg-orange-200 text-orange-800 border-none"
-        >
-          Reserva
-        </Badge>
-      );
-  }
-};
-
-export { getActionBadge, getEntityBadge, getStatusBadge };
+export { getActionBadge, getStatusBadge };

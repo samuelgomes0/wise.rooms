@@ -31,6 +31,8 @@ interface AuditHeaderProps {
   setActionFilter: (value: string) => void;
   dateFilter: Date | null;
   setDateFilter: (value: Date | null) => void;
+  entityFilter: string;
+  setEntityFilter: (value: string) => void;
 }
 
 function AuditHeader({
@@ -40,6 +42,8 @@ function AuditHeader({
   setActionFilter,
   dateFilter,
   setDateFilter,
+  entityFilter,
+  setEntityFilter,
 }: AuditHeaderProps) {
   const { user } = useContext(AuthContext);
 
@@ -112,8 +116,26 @@ function AuditHeader({
             <SelectContent>
               <SelectItem value="Todas">Todas as ações</SelectItem>
               <SelectItem value="CREATE">Criar</SelectItem>
-              <SelectItem value="UPDATE">Editar</SelectItem>
+              <SelectItem value="UPDATE">Atualizar</SelectItem>
               <SelectItem value="DELETE">Deletar</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Select value={entityFilter} onValueChange={setEntityFilter}>
+            <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
+              <FilterIcon
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
+              <SelectValue placeholder="Todas" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Todas">Todas as entidades</SelectItem>
+              <SelectItem value="USER">Usuário</SelectItem>
+              <SelectItem value="ROOM">Sala</SelectItem>
+              <SelectItem value="RESOURCE">Recurso</SelectItem>
+              <SelectItem value="BOOKING">Reserva</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -5,18 +5,22 @@ import Pagination from "@/components/Pagination";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import auditServiceInstance from "@/services/AuditService";
 import { IAuditLog } from "@/types";
-import { Filter, getActionBadge, getEntityBadge } from "@/utils";
+import { Filter, getActionBadge } from "@/utils";
 import { useContext, useEffect, useState } from "react";
+
+interface IAuditContentProps {
+  searchTerm: string;
+  actionFilter: string;
+  dateFilter: Date | null;
+  entityFilter: string;
+}
 
 function AuditContent({
   searchTerm,
   actionFilter,
+  entityFilter,
   dateFilter,
-}: {
-  searchTerm: string;
-  actionFilter: string;
-  dateFilter: Date | null;
-}) {
+}: IAuditContentProps) {
   const { setIsLoading } = useContext(LoadingContext);
 
   const [auditLogs, setAuditLogs] = useState<IAuditLog[]>([]);
@@ -27,6 +31,7 @@ function AuditContent({
     Filter.auditLogs({
       auditLogs,
       actionFilter,
+      entityFilter,
       dateFilter,
       searchTerm,
       currentPage,
@@ -51,23 +56,27 @@ function AuditContent({
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm overflow-y-auto">
-        <GenericTable
-          columns={[
-            { header: "Usuário", accessor: "user" },
-            { header: "Ação", accessor: "action" },
-            { header: "Entidade", accessor: "entity" },
-            { header: "Data", accessor: "date" },
-          ]}
-          data={paginatedAuditLogs.map((log: IAuditLog) => ({
-            user: log.user.name,
-            action: getActionBadge(log.action),
-            entity: getEntityBadge(log.entity),
-            date: new Date(log.createdAt).toLocaleString("pt-BR"),
-          }))}
-        />
-      </div>
-      <div className="flex flex-col-reverse gap-4 sm:flex-row justify-between items-center mt-4">
+      <main className="flex-1 overflow-y-auto">
+        <div className="bg-white rounded-lg shadow-sm">
+          <GenericTable
+            columns={[
+              { header: "Usuário", accessor: "user" },
+              { header: "Ação", accessor: "action" },
+              { header: "Tipo", accessor: "type" },
+              { header: "Entidade", accessor: "entityId" },
+              { header: "Data", accessor: "date" },
+            ]}
+            data={paginatedAuditLogs.map((log: IAuditLog) => ({
+              user: log.user.name,
+              action: getActionBadge(log.action),
+              type: log.entity,
+              entityId: log.entityId,
+              date: new Date(log.createdAt).toLocaleString("pt-BR"),
+            }))}
+          />
+        </div>
+      </main>
+      <div className="flex justify-between items-center mt-4">
         <p className="text-sm text-gray-500">
           Exibindo {paginatedAuditLogs?.length || 0} de{" "}
           {filteredAuditLogs?.length || 0} logs

@@ -8,7 +8,7 @@ import { Nav } from "./Nav";
 import { UserDropdown } from "./UserDropdown";
 
 export function Sidebar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Inicia fechado em mobile
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathName = usePathname();
 
   const handleSidebarVisibility = () => {
@@ -17,7 +17,6 @@ export function Sidebar() {
 
   return (
     <div className="flex">
-      {/* Sidebar */}
       <aside
         className={`
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 

@@ -2,7 +2,7 @@ import capitalizeString from "./capitalizeString.util";
 import errorHandler from "./errorHandler.util";
 import Filter from "./filterHandler.util";
 import attributeColorToRoom from "./generateRoomColor.util";
-import { getActionBadge, getEntityBadge, getStatusBadge } from "./getBadges";
+import { getActionBadge, getStatusBadge } from "./getBadges";
 
 export {
   attributeColorToRoom,
@@ -10,6 +10,5 @@ export {
   errorHandler,
   Filter,
   getActionBadge,
-  getEntityBadge,
   getStatusBadge,
 };
