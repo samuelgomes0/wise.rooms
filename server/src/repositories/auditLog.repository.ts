@@ -1,9 +1,22 @@
 import { prisma } from "../database/prisma-client";
-import { IAuditLogRepository, IAuditLog, IAuditLogDTO } from "../interfaces";
+import { IAuditLog, IAuditLogDTO, IAuditLogRepository } from "../interfaces";
 
 export class AuditLogRepository implements IAuditLogRepository {
   async listAuditLogs(): Promise<IAuditLog[]> {
-    return await prisma.auditLog.findMany();
+    return await prisma.auditLog.findMany({
+      select: {
+        id: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        action: true,
+        entity: true,
+        entityId: true,
+        createdAt: true,
+      },
+    });
   }
 
   async createAuditLog({
@@ -11,8 +24,8 @@ export class AuditLogRepository implements IAuditLogRepository {
     action,
     entity,
     entityId,
-  }: IAuditLogDTO): Promise<IAuditLog> {
-    return await prisma.auditLog.create({
+  }: IAuditLogDTO): Promise<void> {
+    await prisma.auditLog.create({
       data: {
         userId,
         action,

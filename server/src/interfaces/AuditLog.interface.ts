@@ -2,12 +2,13 @@ import { AuditAction, AuditEntity } from "@prisma/client";
 
 export interface IAuditLog {
   id: number;
-  userId: string;
-  action: AuditAction;
-  entity: AuditEntity;
+  user: {
+    name: string;
+  };
+  action: string;
+  entity: string;
   entityId: string;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface IAuditLogDTO {
@@ -19,5 +20,5 @@ export interface IAuditLogDTO {
 
 export interface IAuditLogRepository {
   listAuditLogs(): Promise<IAuditLog[]>;
-  createAuditLog(data: IAuditLogDTO): Promise<IAuditLog>;
+  createAuditLog(data: IAuditLogDTO): Promise<void>;
 }

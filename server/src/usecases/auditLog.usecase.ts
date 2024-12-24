@@ -19,12 +19,12 @@ export class AuditLogUseCase {
     action,
     entity,
     entityId,
-  }: IAuditLogDTO): Promise<IAuditLog> {
+  }: IAuditLogDTO): Promise<void> {
     if (!userId || !action || !entity || !entityId) {
       throw new Error("Missing required fields.");
     }
 
-    return await this.auditLogRepository.createAuditLog({
+    await this.auditLogRepository.createAuditLog({
       userId,
       action,
       entity,
