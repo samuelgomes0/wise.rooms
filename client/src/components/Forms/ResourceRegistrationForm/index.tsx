@@ -41,7 +41,6 @@ export function ResourceRegistrationForm({
     resolver: zodResolver(createResourceSchema),
     defaultValues: {
       name: "",
-      type: "",
       quantity: 0,
       roomId: "",
       description: "",
@@ -53,7 +52,6 @@ export function ResourceRegistrationForm({
   const onSubmit = async (values: z.infer<typeof createResourceSchema>) => {
     await resourceServiceInstance.createResource({
       name: values.name,
-      type: values.type,
       quantity: values.quantity,
       roomId: Number(values.roomId),
       description: values.description,
@@ -85,19 +83,6 @@ export function ResourceRegistrationForm({
               <FormLabel>Nome</FormLabel>
               <FormControl>
                 <Input placeholder="Nome do recurso" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tipo</FormLabel>
-              <FormControl>
-                <Input placeholder="Tipo do recurso" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

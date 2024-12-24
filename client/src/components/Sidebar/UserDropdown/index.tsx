@@ -60,7 +60,7 @@ export function UserDropdown() {
         </DropdownMenu>
       ) : (
         <Link href="/entrar">
-          <Button variant="outline" className="w-full">
+          <Button variant="default" className="w-full">
             Entrar
           </Button>
         </Link>

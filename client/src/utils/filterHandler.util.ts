@@ -153,42 +153,48 @@ function resources({
 }
 
 interface AuditProps {
-  audits: IAuditLog[];
-  dateFilter: Date;
+  auditLogs: IAuditLog[];
   searchTerm: string;
+  dateFilter: Date;
+  actionFilter: string;
   currentPage: number;
   itemsPerPage: number;
 }
 
-function audit({
-  audits,
-  dateFilter,
+function auditLogs({
+  auditLogs,
   searchTerm,
+  dateFilter,
+  actionFilter,
   currentPage,
   itemsPerPage,
 }: AuditProps) {
   const lowerSearchTerm = searchTerm.toLowerCase();
 
-  const filteredAudits = audits.filter((audit) => {
-    const matchesSearch = audit.user.name
-      .toLowerCase()
-      .includes(lowerSearchTerm);
+  const filteredAuditLogs = auditLogs.filter((log) => {
+    const matchesSearch =
+      log.user.name.toLowerCase().includes(lowerSearchTerm) ||
+      log.action.toLowerCase().includes(lowerSearchTerm) ||
+      log.entity.toLowerCase().includes(lowerSearchTerm);
 
     const matchesDate =
       !dateFilter ||
-      parseISO(audit.createdAt.toString()).toDateString() ===
+      parseISO(log.createdAt.toString()).toDateString() ===
         dateFilter.toDateString();
 
-    return matchesSearch && matchesDate;
+    const matchesAction =
+      actionFilter === "Todas" || log.action === actionFilter;
+
+    return matchesSearch && matchesDate && matchesAction;
   });
 
-  const paginatedAudits = filteredAudits.slice(
+  const totalPages = Math.ceil(filteredAuditLogs.length / itemsPerPage);
+  const paginatedAuditLogs = filteredAuditLogs.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  const totalPages = Math.ceil(filteredAudits.length / itemsPerPage);
 
-  return { filteredAudits, paginatedAudits, totalPages };
+  return { filteredAuditLogs, paginatedAuditLogs, totalPages };
 }
 
 const Filter = {
@@ -196,7 +202,7 @@ const Filter = {
   rooms,
   users,
   resources,
-  audit,
+  auditLogs,
 };
 
 export default Filter;

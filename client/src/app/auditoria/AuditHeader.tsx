@@ -1,5 +1,9 @@
+"use client";
+
 import SearchFilter from "@/components/SearchFilter";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
@@ -15,113 +19,105 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Role } from "@/constants";
 import { AuthContext } from "@/contexts/AuthContext";
-import { IAuditLog } from "@/types";
-import { Filter } from "@/utils";
+import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Calendar, CalendarIcon, SearchIcon } from "lucide-react";
-import { format } from "path";
-import { useContext, useState } from "react";
-import { Button } from "react-day-picker";
+import { CalendarIcon, FilterIcon, SearchIcon } from "lucide-react";
+import { useContext } from "react";
 
-function AuditHeader() {
-  const [auditLogs, setAuditLogs] = useState<IAuditLog[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [actionFilter, setActionFilter] = useState<string>("Todas");
-  const [dateFilter, setDateFilter] = useState<Date | undefined>();
+interface AuditHeaderProps {
+  searchTerm: string;
+  setSearchTerm: (value: string) => void;
+  actionFilter: string;
+  setActionFilter: (value: string) => void;
+  dateFilter: Date | null;
+  setDateFilter: (value: Date | null) => void;
+}
 
-  const { filteredAuditLogs, paginatedAuditLogs, totalPages } =
-    Filter.auditLogs({
-      auditLogs,
-      searchTerm,
-      dateFilter,
-      currentPage,
-      itemsPerPage,
-    });
-
+function AuditHeader({
+  searchTerm,
+  setSearchTerm,
+  actionFilter,
+  setActionFilter,
+  dateFilter,
+  setDateFilter,
+}: AuditHeaderProps) {
   const { user } = useContext(AuthContext);
 
   return (
-    <header>
-      <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
-            <Avatar>
-              <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
-            </Avatar>
-            <div>
-              <h1 className="text-2xl font-bold">Auditoria</h1>
-              <div className="text-sm text-read">
-                {user?.role.name ? (
-                  <span>
-                    {Role.label[user.role.name as keyof typeof Role.label]}
-                  </span>
-                ) : (
-                  <Skeleton className="w-24 h-3" />
-                )}
-              </div>
+    <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
+      <div className="flex justify-between items-center mb-8">
+        <div className="flex items-center gap-4 sm:flex-row">
+          <Avatar className="hidden sm:block">
+            <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
+          </Avatar>
+          <div>
+            <h1 className="text-2xl font-bold">Auditoria</h1>
+            <div className="text-sm text-read">
+              {user?.role.name ? (
+                <span>
+                  {Role.label[user.role.name as keyof typeof Role.label]}
+                </span>
+              ) : (
+                <Skeleton className="w-24 h-3" />
+              )}
             </div>
           </div>
         </div>
-        <div className="flex gap-4 relative">
-          <SearchIcon
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={20}
-          />
-          <SearchFilter
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            placeholder="Buscar por usuário"
-          />
-          <div className="relative">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-[200px] justify-start text-left font-normal"
-                >
-                  {dateFilter ? (
-                    format(dateFilter, "PPP", { locale: ptBR })
-                  ) : (
-                    <span>Selecione uma data</span>
-                  )}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={dateFilter}
-                  onSelect={setDateFilter}
-                  initialFocus
-                  locale={ptBR}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+      </div>
+      <div className="flex gap-4 relative">
+        <SearchIcon
+          className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          size={20}
+        />
+        <SearchFilter
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          placeholder="Buscar por usuário"
+        />
+        <div className="relative">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600"
+              >
+                {dateFilter ? (
+                  format(dateFilter, "PPP", { locale: ptBR })
+                ) : (
+                  <span className="hidden sm:block">Selecione uma data</span>
+                )}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={dateFilter}
+                onSelect={setDateFilter}
+                initialFocus
+                locale={ptBR}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="relative">
           <Select value={actionFilter} onValueChange={setActionFilter}>
-            <SelectTrigger className="w-[300px]">
-              <SelectValue placeholder="Todos" />
+            <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
+              <FilterIcon
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
+              <SelectValue placeholder="Todas" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Todas">Todas</SelectItem>
-              <SelectItem value="Criar">Criar</SelectItem>
-              <SelectItem value="Atualizar">Atualizar</SelectItem>
-              <SelectItem value="Deletar">Deletar</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={entityFilter} onValueChange={setEntityFilter}>
-            <SelectTrigger className="w-[300px]">
-              <SelectValue placeholder="Todos" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Todas">Todas</SelectItem>
-              <SelectItem value="Criar">Criar</SelectItem>
-              <SelectItem value="Atualizar">Atualizar</SelectItem>
-              <SelectItem value="Deletar">Deletar</SelectItem>
+              <SelectItem value="Todas">Todas as ações</SelectItem>
+              <SelectItem value="CREATE">Criar</SelectItem>
+              <SelectItem value="UPDATE">Editar</SelectItem>
+              <SelectItem value="DELETE">Deletar</SelectItem>
             </SelectContent>
           </Select>
         </div>
-      </header>
+      </div>
     </header>
   );
 }

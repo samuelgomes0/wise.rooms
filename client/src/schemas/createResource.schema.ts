@@ -4,9 +4,6 @@ const createResourceSchema = z.object({
   name: z.string().min(2, {
     message: "O nome deve ter pelo menos 2 caracteres.",
   }),
-  type: z.string().min(2, {
-    message: "O tipo deve ter pelo menos 2 caracteres.",
-  }),
   quantity: z
     .number({ invalid_type_error: "Informe a quantidade como um número." })
     .min(1, { message: "A quantidade deve ser pelo menos 1." }),

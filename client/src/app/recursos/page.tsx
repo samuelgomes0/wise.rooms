@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Notification, Role, ROLES_LABELS } from "@/constants";
+import { Notification, Role } from "@/constants";
 import { AuthContext } from "@/contexts/AuthContext";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import { useToast } from "@/hooks/use-toast";
@@ -59,7 +59,7 @@ export default function Recursos() {
   const [statusFilter, setStatusFilter] = useState("Todos");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
 
   const { user, isAuthenticated } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
