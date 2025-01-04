@@ -38,12 +38,14 @@ router.post("/", async (request: any, reply) => {
 
     const { id: performedBy } = request.user;
 
-    await auditLogUseCase.createAuditLog({
-      userId: performedBy,
-      action: AuditAction.CREATE,
-      entity: AuditEntity.ROLE,
-      entityId: String(role.id),
-    });
+    if (!performedBy) {
+      await auditLogUseCase.createAuditLog({
+        userId: performedBy,
+        action: AuditAction.CREATE,
+        entity: AuditEntity.ROLE,
+        entityId: String(role.id),
+      });
+    }
 
     return reply.status(201).send({ success: true });
   } catch (error) {

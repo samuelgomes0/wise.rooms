@@ -1,11 +1,11 @@
 meta {
-  name: setupAdmin
+  name: createUser
   type: http
-  seq: 4
+  seq: 3
 }
 
 post {
-  url: {{LOCAL_API_BASE_URL}}/users/setup-admin
+  url: {{LOCAL_API_BASE_URL}}/users
   body: json
   auth: none
 }
