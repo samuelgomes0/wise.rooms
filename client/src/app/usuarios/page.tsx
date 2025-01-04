@@ -148,7 +148,7 @@ export default function Usuarios() {
             <SearchFilter
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
-              placeholder="Buscar por código, nome ou e-mail"
+              placeholder="Buscar por nome ou e-mail"
             />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
