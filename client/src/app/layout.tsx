@@ -2,7 +2,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/contexts/AuthContext";
 import LoadingProvider from "@/contexts/LoadingContext";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -23,17 +22,13 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${inter.className} bg-gray-100 flex min-h-screen`}>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-        >
-          <AuthProvider>
-            <LoadingProvider>
-              <Sidebar />
-              <main className="w-full">{children}</main>
-              <Toaster />
-            </LoadingProvider>
-          </AuthProvider>
-        </GoogleOAuthProvider>
+        <AuthProvider>
+          <LoadingProvider>
+            <Sidebar />
+            <main className="w-full">{children}</main>
+            <Toaster />
+          </LoadingProvider>
+        </AuthProvider>
       </body>
     </html>
   );

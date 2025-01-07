@@ -10,7 +10,8 @@ import { Separator } from "@/components/ui/separator";
 import { DEFAULT_TIME_SLOTS } from "@/constants";
 import { IBooking } from "@/types";
 import { attributeColorToRoom, getStatusBadge } from "@/utils";
-import { ZoomInIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, ZoomInIcon } from "lucide-react";
+import React, { useState } from "react";
 import Header from "./Header";
 
 interface WeeklyViewProps {
@@ -19,6 +20,7 @@ interface WeeklyViewProps {
 }
 
 export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
+  const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const adjustedStartDate = new Date(startDate);
   const dayOfWeek = adjustedStartDate.getDay();
   adjustedStartDate.setDate(adjustedStartDate.getDate() - dayOfWeek);
@@ -63,12 +65,25 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
     e.currentTarget.style.backgroundColor = baseColor;
   };
 
+  const handleNextDay = () => {
+    if (currentDayIndex < weekDays.length - 1) {
+      setCurrentDayIndex(currentDayIndex + 1);
+    }
+  };
+
+  const handlePrevDay = () => {
+    if (currentDayIndex > 0) {
+      setCurrentDayIndex(currentDayIndex - 1);
+    }
+  };
+
   return (
     <div className="mt-8 flex relative">
       <div className="w-full">
         <Header weekDays={weekDays} />
+        {/* Layout para telas acima de md */}
         <div
-          className="grid gap-1 relative"
+          className="hidden md:grid gap-1 relative"
           style={{
             gridTemplateColumns: "repeat(7, 1fr)",
             gridTemplateRows: `repeat(${DEFAULT_TIME_SLOTS.length}, minmax(96px, auto))`,
@@ -92,13 +107,11 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
                 ${isCurrentTime ? "bg-[rgba(23,23,23,0.1)]" : "bg-white"} 
                 ${colIndex === 0 ? "border-l" : ""}`}
                 >
-                  {/* Time slot */}
                   {colIndex === 0 && (
                     <span className="text-sm font-medium absolute flex h-full top-0 items-center -left-14 text-gray-600 whitespace-pre-wrap">
                       {timeSlot}
                     </span>
                   )}
-                  {/* Day */}
                   {bookingsInSlot.map((booking) => (
                     <Dialog key={booking.id}>
                       <DialogTrigger className="w-full text-left">
@@ -190,6 +203,101 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
               );
             })
           )}
+        </div>
+        {/* Layout para telas abaixo de md */}
+        <div className="md:hidden flex flex-col items-center gap-4">
+          <div className="flex justify-between items-center w-full">
+            <button
+              onClick={handlePrevDay}
+              disabled={currentDayIndex === 0}
+              className="p-2 rounded bg-white disabled:opacity-50"
+            >
+              <ChevronLeft />
+            </button>
+            <span className="font-medium">
+              {weekDays[currentDayIndex].toLocaleDateString("pt-BR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
+            </span>
+            <button
+              onClick={handleNextDay}
+              disabled={currentDayIndex === weekDays.length - 1}
+              className="p-2 rounded bg-white disabled:opacity-50"
+            >
+              <ChevronRight />
+            </button>
+          </div>
+          <div
+            className="grid gap-1 w-3/4"
+            style={{
+              gridTemplateRows: `repeat(${DEFAULT_TIME_SLOTS.length}, minmax(96px, auto))`,
+            }}
+          >
+            {DEFAULT_TIME_SLOTS.map((timeSlot, rowIndex) => {
+              const day = weekDays[currentDayIndex];
+              const bookingsInSlot = filteredBookings.filter((booking) =>
+                isBookingInSlot(booking, day, timeSlot.split("\n")[0])
+              );
+
+              return (
+                <div
+                  key={`cell-${rowIndex}`}
+                  className={
+                    "shadow-sm rounded relative flex flex-wrap items-start gap-1 p-1 bg-white w-full"
+                  }
+                >
+                  <span className="text-sm font-medium absolute flex h-full top-0 items-center -left-14 text-gray-600 whitespace-pre-wrap">
+                    {timeSlot}
+                  </span>
+                  {bookingsInSlot.map((booking) => (
+                    <Dialog key={booking.id}>
+                      <DialogTrigger className="w-full text-left">
+                        <div
+                          style={{
+                            backgroundColor: attributeColorToRoom(
+                              booking.roomId
+                            ).color,
+                          }}
+                          onMouseEnter={(e) =>
+                            handleMouseEnter(
+                              e,
+                              attributeColorToRoom(booking.roomId).hoverColor
+                            )
+                          }
+                          onMouseLeave={(e) =>
+                            handleMouseLeave(
+                              e,
+                              attributeColorToRoom(booking.roomId).color
+                            )
+                          }
+                          className="text-xs p-1 px-2 rounded shadow-sm flex items-center justify-between cursor-pointer transition-colors"
+                        >
+                          <div>
+                            <strong>{booking.room.name}</strong>
+                            <p>{booking.user.name}</p>
+                          </div>
+                          <ZoomInIcon size={16} />
+                        </div>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl">
+                            Detalhes do Agendamento
+                          </DialogTitle>
+                        </DialogHeader>
+                        <Separator />
+                        <DialogDescription className="text-black grid grid-cols-1 grid-row-3 gap-4">
+                          {/* Conteúdo do Dialog */}
+                        </DialogDescription>
+                      </DialogContent>
+                    </Dialog>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
