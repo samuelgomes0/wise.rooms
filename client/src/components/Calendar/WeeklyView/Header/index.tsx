@@ -15,7 +15,7 @@ export default function Header({ weekDays }: WeeklyViewHeaderProps) {
   };
 
   return (
-    <div className="grid gap-1 grid-cols-7">
+    <div className="hidden md:grid gap-1 grid-cols-7 ">
       {weekDays.map((day, index) => (
         <div
           key={index}

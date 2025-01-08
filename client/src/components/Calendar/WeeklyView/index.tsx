@@ -205,7 +205,7 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
           )}
         </div>
         {/* Layout para telas abaixo de md */}
-        <div className="md:hidden flex flex-col items-center gap-4">
+        <div className="md:hidden flex flex-col items-end md:items-center gap-4">
           <div className="flex justify-between items-center w-full">
             <button
               onClick={handlePrevDay}
@@ -218,7 +218,6 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
               {weekDays[currentDayIndex].toLocaleDateString("pt-BR", {
                 weekday: "long",
                 day: "numeric",
-                month: "long",
               })}
             </span>
             <button
@@ -230,7 +229,7 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
             </button>
           </div>
           <div
-            className="grid gap-1 w-3/4"
+            className="grid gap-1 max-w-full w-10/12"
             style={{
               gridTemplateRows: `repeat(${DEFAULT_TIME_SLOTS.length}, minmax(96px, auto))`,
             }}
