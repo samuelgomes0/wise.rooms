@@ -4,6 +4,7 @@ import { IBooking, IBookingCreateDTO, IBookingRepository } from "../interfaces";
 
 export class BookingRepository implements IBookingRepository {
   async listBookings(): Promise<IBooking[]> {
+    await this.checkAndUpdateBookingStatuses();
     return await prisma.booking.findMany({
       include: {
         user: true,
@@ -13,6 +14,7 @@ export class BookingRepository implements IBookingRepository {
   }
 
   async findBookingById(bookingId: string): Promise<IBooking | null> {
+    await this.checkAndUpdateBookingStatuses();
     return await prisma.booking.findUnique({
       where: {
         id: bookingId,
@@ -117,6 +119,41 @@ export class BookingRepository implements IBookingRepository {
       },
       data: {
         status,
+      },
+    });
+  }
+
+  async checkAndUpdateBookingStatuses(): Promise<void> {
+    const now = new Date();
+
+    console.log("teste");
+
+    await prisma.booking.updateMany({
+      where: {
+        startTime: {
+          lte: now,
+        },
+        endTime: {
+          gte: now,
+        },
+        status: "CONFIRMED",
+      },
+      data: {
+        status: "ACTIVE",
+      },
+    });
+
+    await prisma.booking.updateMany({
+      where: {
+        endTime: {
+          lt: now,
+        },
+        status: {
+          in: ["ACTIVE", "CONFIRMED"],
+        },
+      },
+      data: {
+        status: "COMPLETED",
       },
     });
   }

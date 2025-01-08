@@ -36,4 +36,5 @@ export interface IBookingRepository {
     bookingId: string,
     status: BookingStatus
   ): Promise<IBooking>;
+  checkAndUpdateBookingStatuses(): Promise<void>;
 }
