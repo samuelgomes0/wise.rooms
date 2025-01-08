@@ -43,9 +43,9 @@ export function Sidebar() {
         aria-label="Alterar visibilidade do menu"
         aria-expanded={sidebarOpen}
         aria-controls="sidebar-navigation"
-        className="fixed top-4 right-4 lg:hidden z-50 bg-white shadow-sm"
+        className="fixed top-4 right-4 lg:hidden z-50 bg-black shadow-sm"
       >
-        <MenuIcon aria-hidden="true" />
+        <MenuIcon aria-hidden="true" color="white" />
       </Button>
     </div>
   );

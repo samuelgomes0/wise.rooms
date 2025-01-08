@@ -20,7 +20,6 @@ interface WeeklyViewProps {
 }
 
 export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
-  const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const adjustedStartDate = new Date(startDate);
   const dayOfWeek = adjustedStartDate.getDay();
   adjustedStartDate.setDate(adjustedStartDate.getDate() - dayOfWeek);
@@ -30,6 +29,15 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
     day.setDate(adjustedStartDate.getDate() + i);
     return day;
   });
+
+  const today = new Date();
+  const todayIndex = weekDays.findIndex(
+    (day) => day.toDateString() === today.toDateString()
+  );
+
+  const [currentDayIndex, setCurrentDayIndex] = useState(
+    todayIndex >= 0 ? todayIndex : 0
+  );
 
   const filteredBookings = bookings.filter((booking) =>
     ["CONFIRMED", "ACTIVE", "COMPLETED"].includes(booking.status)
@@ -116,7 +124,6 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
                     <Dialog key={booking.id}>
                       <DialogTrigger className="w-full text-left">
                         <div
-                          key={booking.id}
                           style={{
                             backgroundColor: attributeColorToRoom(
                               booking.roomId
