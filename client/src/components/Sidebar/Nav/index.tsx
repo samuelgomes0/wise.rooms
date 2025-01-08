@@ -45,65 +45,71 @@ export function Nav() {
   ];
 
   return (
-    <nav className="p-4">
-      <ul className="space-y-2">
-        {mainNavItems.map(({ label, icon: Icon, path }) => (
-          <li key={label}>
-            {label === "Minhas reservas" && !isAuthenticated ? (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild className="!pointer-events-auto">
-                    <Button
-                      disabled={label === "Minhas reservas" && !isAuthenticated}
-                      variant="ghost"
-                      className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}
-                      aria-current={isActive(path) ? "page" : undefined}
+    <main role="main">
+      <nav className="p-4">
+        <ul role="list" className="space-y-2">
+          {mainNavItems.map(({ label, icon: Icon, path }) => (
+            <li key={label}>
+              {label === "Minhas reservas" && !isAuthenticated ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        disabled
+                        aria-disabled="true"
+                        aria-describedby="tooltip-login-message"
+                        variant="ghost"
+                        className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}
+                        aria-current={isActive(path) ? "page" : undefined}
+                      >
+                        <Icon aria-hidden="true" className="mr-2 h-4 w-4" />
+                        {label}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      id="tooltip-login-message"
+                      className="text-sm"
                     >
-                      <Icon className="mr-2 h-4 w-4" />
-                      {label}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent className="text-sm">
-                    Faça login para acessar
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <Link href={path} aria-hidden>
-                <Button
-                  disabled={label === "Minhas reservas" && !isAuthenticated}
-                  variant="ghost"
-                  className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}
-                  aria-current={isActive(path) ? "page" : undefined}
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  {label}
-                </Button>
-              </Link>
+                      Faça login para acessar
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                <Link href={path}>
+                  <Button
+                    variant="ghost"
+                    className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}
+                    aria-current={isActive(path) ? "page" : undefined}
+                  >
+                    <Icon aria-hidden="true" className="mr-2 h-4 w-4" />
+                    {label}
+                  </Button>
+                </Link>
+              )}
+            </li>
+          ))}
+          {isAuthenticated &&
+            user?.role.id === (Role.id.Administrador || Role.id.Supervisor) && (
+              <>
+                <h3 className="font-bold text-sm py-2">Gerenciamento</h3>
+                {managementNavItems.map(({ label, icon: Icon, path }) => (
+                  <li key={label}>
+                    <Link href={path}>
+                      <Button
+                        variant="ghost"
+                        className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}
+                        aria-current={isActive(path) ? "page" : undefined}
+                      >
+                        <Icon aria-hidden="true" className="mr-2 h-4 w-4" />
+                        {label === "Auditoria" ? "Auditoria" : label}
+                      </Button>
+                    </Link>
+                  </li>
+                ))}
+              </>
             )}
-          </li>
-        ))}
-        {isAuthenticated &&
-          user?.role.id === (Role.id.Administrador || Role.id.Supervisor) && (
-            <>
-              <h3 className="font-bold text-sm py-2">Gerenciamento</h3>
-              {managementNavItems.map(({ label, icon: Icon, path }) => (
-                <li key={label}>
-                  <Link href={path} aria-hidden>
-                    <Button
-                      variant="ghost"
-                      className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}
-                      aria-current={isActive(path) ? "page" : undefined}
-                    >
-                      <Icon className="mr-2 h-4 w-4" />
-                      {label === "Auditoria" ? "Auditoria" : label}
-                    </Button>
-                  </Link>
-                </li>
-              ))}
-            </>
-          )}
-      </ul>
-    </nav>
+        </ul>
+      </nav>
+    </main>
   );
 }

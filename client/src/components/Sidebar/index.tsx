@@ -18,13 +18,15 @@ export function Sidebar() {
   return (
     <div className="flex">
       <aside
+        id="sidebar-navigation"
         className={`
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-          lg:translate-x-0 md:w-72
+          lg:translate-x-0 md:w-72 w-full
           fixed lg:sticky h-screen top-0 left-0 bg-white z-50 shadow-sm transition-transform transform-gpu ease-in-out duration-300
-          ${pathName === "/entrar" ? "hidden" : ""}
+          ${pathName === "/entrar" ? "hidden" : ""} 
         `}
-        role="navigation"
+        role="complementary"
+        aria-hidden={pathName === "/entrar"}
       >
         <div className="flex items-center justify-between p-4">
           <span className="text-2xl font-bold">wise.rooms</span>
@@ -39,9 +41,11 @@ export function Sidebar() {
         size="icon"
         onClick={handleSidebarVisibility}
         aria-label="Alterar visibilidade do menu"
+        aria-expanded={sidebarOpen}
+        aria-controls="sidebar-navigation"
         className="fixed top-4 right-4 lg:hidden z-50 bg-white shadow-sm"
       >
-        <MenuIcon />
+        <MenuIcon aria-hidden="true" />
       </Button>
     </div>
   );
