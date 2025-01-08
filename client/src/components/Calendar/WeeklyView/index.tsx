@@ -295,7 +295,50 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
                         </DialogHeader>
                         <Separator />
                         <DialogDescription className="text-black grid grid-cols-1 grid-row-3 gap-4">
-                          {/* Conteúdo do Dialog */}
+                          <div className="grid grid-cols-3 items-center justify-between">
+                            <div className="flex flex-col">
+                              <strong>Usuário</strong> {booking.user.name}
+                            </div>
+                            <div className="flex flex-col">
+                              <strong>Sala</strong> {booking.room.name}
+                            </div>
+                            <div className="flex flex-col">
+                              <strong>Data</strong>{" "}
+                              {new Date(booking.date).toLocaleDateString(
+                                "pt-BR"
+                              )}
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-3">
+                            <div className="flex flex-col">
+                              <strong>Horário</strong>{" "}
+                              {new Date(booking.startTime).toLocaleTimeString(
+                                "pt-BR",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )}{" "}
+                              -{" "}
+                              {new Date(booking.endTime).toLocaleTimeString(
+                                "pt-BR",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )}
+                            </div>
+                            <div className="grid gap-1 w-2/4">
+                              <strong>Status</strong>{" "}
+                              {getStatusBadge(booking.status)}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="flex flex-col break-words">
+                              <strong>Descrição</strong>{" "}
+                              {booking.description || "Sem descrição"}
+                            </div>
+                          </div>
                         </DialogDescription>
                       </DialogContent>
                     </Dialog>
