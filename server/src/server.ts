@@ -4,9 +4,15 @@ import routes from "./routes";
 
 const server = express();
 
+const allowedOrigins = [
+  "https://wiserooms.com.br",
+  "https://www.wiserooms.com.br",
+  "http://localhost:3000",
+];
+
 server.use(
   cors({
-    origin: ["http://wiserooms.com.br", "http://localhost:3000"],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
