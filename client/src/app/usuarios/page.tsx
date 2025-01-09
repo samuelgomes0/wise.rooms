@@ -24,13 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Notification, Role } from "@/constants";
@@ -41,6 +34,13 @@ import roleServiceInstance from "@/services/RoleService";
 import userServiceInstance from "@/services/UserService";
 import { ApiError, IRole, IUser } from "@/types";
 import { errorHandler, Filter } from "@/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
 import { MoreHorizontalIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -58,10 +58,12 @@ export default function Usuarios() {
   const [statusFilter, setStatusFilter] = useState("Todos");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 30;
 
   const { user, isAuthenticated } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
+
+  const { toast } = useToast();
 
   const { filteredUsers, paginatedUsers, totalPages } = Filter.users({
     users,
@@ -82,8 +84,6 @@ export default function Usuarios() {
     const roles = await roleServiceInstance.listRoles();
     setRoles(roles);
   };
-
-  const { toast } = useToast();
 
   const handleDeleteUser = async (id: string) => {
     try {
@@ -108,7 +108,10 @@ export default function Usuarios() {
   }, []);
 
   return (
-    <div className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen">
+    <div
+      className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen"
+      role="main"
+    >
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
@@ -128,7 +131,7 @@ export default function Usuarios() {
               </div>
             </div>
           </div>
-          <Button>
+          <Button aria-label="Adicionar novo usuário">
             <Modal
               title="Adicionar Novo Usuário"
               triggerText="+ Novo Usuário"
@@ -144,14 +147,20 @@ export default function Usuarios() {
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
+              aria-hidden="true"
             />
             <SearchFilter
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               placeholder="Buscar por nome ou e-mail"
+              aria-label="Campo de busca"
             />
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select
+            value={statusFilter}
+            onValueChange={setStatusFilter}
+            aria-label="Filtrar por cargo"
+          >
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
@@ -229,7 +238,12 @@ export default function Usuarios() {
                           <strong>E-mail:</strong> {user.email}
                         </div>
                         <div className="flex flex-col">
-                          <strong>Cargo:</strong> {user.role.name}
+                          <strong>Cargo:</strong>{" "}
+                          {
+                            Role.label[
+                              user.role.name as keyof typeof Role.label
+                            ]
+                          }
                         </div>
                       </div>
                     </DialogDescription>

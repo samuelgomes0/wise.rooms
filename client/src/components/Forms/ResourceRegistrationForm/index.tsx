@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,18 +24,21 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Notification } from "@/constants";
+import { LoadingContext } from "@/contexts/LoadingContext";
 import { useToast } from "@/hooks/use-toast";
 import { createResourceSchema } from "@/schemas";
 import resourceServiceInstance from "@/services/ResourceService";
 import roomServiceInstance from "@/services/RoomService";
-import { IRoom } from "@/types";
-import { useEffect, useState } from "react";
+import { ApiError, IRoom } from "@/types";
+import { errorHandler } from "@/utils";
+import { useContext, useEffect, useState } from "react";
 
 export function ResourceRegistrationForm({
   onCloseModal,
 }: {
   onCloseModal: () => void;
 }) {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [rooms, setRooms] = useState<IRoom[]>([]);
 
   const form = useForm<z.infer<typeof createResourceSchema>>({
@@ -50,17 +54,27 @@ export function ResourceRegistrationForm({
   const { toast } = useToast();
 
   const onSubmit = async (values: z.infer<typeof createResourceSchema>) => {
-    await resourceServiceInstance.createResource({
-      name: values.name,
-      quantity: values.quantity,
-      roomId: Number(values.roomId),
-      description: values.description,
-    });
-    onCloseModal();
-    toast({
-      title: Notification.SUCCESS.RESOURCE.CREATE_TITLE,
-      description: Notification.SUCCESS.RESOURCE.CREATE_DESCRIPTION,
-    });
+    try {
+      setIsLoading(true);
+
+      await resourceServiceInstance.createResource({
+        name: values.name,
+        quantity: values.quantity,
+        roomId: Number(values.roomId),
+        description: values.description,
+      });
+      onCloseModal();
+      toast({
+        title: Notification.SUCCESS.RESOURCE.CREATE_TITLE,
+        description: Notification.SUCCESS.RESOURCE.CREATE_DESCRIPTION,
+      });
+    } catch (error) {
+      const { title, description } = errorHandler(error as ApiError);
+
+      toast({ variant: "destructive", title, description });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -148,7 +162,9 @@ export function ResourceRegistrationForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Cadastrar Recurso</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? <Spinner size="small" /> : "Cadastrar Recurso"}
+        </Button>
       </form>
     </Form>
   );

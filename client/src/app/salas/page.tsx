@@ -49,7 +49,7 @@ export default function Salas() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 30;
 
   const { user, isAuthenticated } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
@@ -92,7 +92,10 @@ export default function Salas() {
   }, []);
 
   return (
-    <div className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen">
+    <div
+      className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen"
+      role="main"
+    >
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
@@ -112,7 +115,7 @@ export default function Salas() {
               </div>
             </div>
           </div>
-          <Button>
+          <Button aria-label="Adicionar nova sala">
             <Modal
               title="Adicionar Nova Sala"
               triggerText="+ Nova Sala"
@@ -127,11 +130,13 @@ export default function Salas() {
           <SearchIcon
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
+            aria-hidden="true"
           />
           <SearchFilter
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             placeholder="Buscar por código, nome ou descrição"
+            aria-label="Campo de busca"
           />
         </div>
       </header>

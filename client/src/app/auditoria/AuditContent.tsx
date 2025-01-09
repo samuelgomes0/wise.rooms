@@ -25,7 +25,7 @@ function AuditContent({
 
   const [auditLogs, setAuditLogs] = useState<IAuditLog[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 30;
 
   const { filteredAuditLogs, paginatedAuditLogs, totalPages } =
     Filter.auditLogs({

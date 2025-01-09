@@ -70,7 +70,7 @@ export default function Reservas() {
   const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined);
   const [statusFilter, setStatusFilter] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 30;
 
   const { toast } = useToast();
 
@@ -121,7 +121,10 @@ export default function Reservas() {
   }, []);
 
   return (
-    <div className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen">
+    <div
+      className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen"
+      role="main"
+    >
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4 sm:flex-row">
@@ -141,7 +144,10 @@ export default function Reservas() {
               </div>
             </div>
           </div>
-          <Button className="hidden sm:block">
+          <Button
+            className="hidden sm:block"
+            aria-label="Adicionar nova reserva"
+          >
             <Modal
               title="Adicionar Nova Reserva"
               triggerText="+ Nova Reserva"
@@ -154,7 +160,10 @@ export default function Reservas() {
               />
             </Modal>
           </Button>
-          <Button className="block sm:hidden">
+          <Button
+            className="block sm:hidden"
+            aria-label="Adicionar nova reserva"
+          >
             <Modal
               title="Adicionar Nova Reserva"
               triggerText="+"
@@ -173,11 +182,13 @@ export default function Reservas() {
           <SearchIcon
             className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
+            aria-hidden="true"
           />
           <SearchFilter
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             placeholder="Buscar por sala ou responsável"
+            aria-label="Campo de busca"
           />
           <div className="relative">
             <Popover>
@@ -185,6 +196,7 @@ export default function Reservas() {
                 <Button
                   variant="outline"
                   className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600"
+                  aria-label="Filtrar por data"
                 >
                   {dateFilter ? (
                     format(dateFilter, "PPP", { locale: ptBR })
@@ -201,16 +213,22 @@ export default function Reservas() {
                   onSelect={setDateFilter}
                   initialFocus
                   locale={ptBR}
+                  aria-label="Calendário de seleção de data"
                 />
               </PopoverContent>
             </Popover>
           </div>
           <div className="relative">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select
+              value={statusFilter}
+              onValueChange={setStatusFilter}
+              aria-label="Filtrar por status"
+            >
               <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
                 <FilterIcon
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                   size={20}
+                  aria-hidden="true"
                 />
                 <SelectValue placeholder="Todos" />
               </SelectTrigger>

@@ -59,7 +59,7 @@ export default function Recursos() {
   const [statusFilter, setStatusFilter] = useState("Todos");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 30;
 
   const { user, isAuthenticated } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
@@ -120,7 +120,10 @@ export default function Recursos() {
   }, []);
 
   return (
-    <div className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen">
+    <div
+      className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen"
+      role="main"
+    >
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
@@ -132,7 +135,7 @@ export default function Recursos() {
               <div className="text-sm text-read">
                 {user?.role.name ? (
                   <span>
-                    {Role.label[user.role.name as keyof typeof ROLES_LABELS]}
+                    {Role.label[user.role.name as keyof typeof Role.label]}
                   </span>
                 ) : (
                   <Skeleton className="w-24 h-3" />
@@ -140,7 +143,7 @@ export default function Recursos() {
               </div>
             </div>
           </div>
-          <Button>
+          <Button aria-label="Adicionar novo recurso">
             <Modal
               title="Adicionar Novo Recurso"
               triggerText="+ Novo Recurso"
@@ -156,14 +159,20 @@ export default function Recursos() {
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
+              aria-hidden="true"
             />
             <SearchFilter
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               placeholder="Buscar por código ou nome"
+              aria-label="Campo de busca"
             />
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select
+            value={statusFilter}
+            onValueChange={setStatusFilter}
+            aria-label="Filtrar por sala"
+          >
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
