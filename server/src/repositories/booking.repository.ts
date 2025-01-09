@@ -126,8 +126,6 @@ export class BookingRepository implements IBookingRepository {
   async checkAndUpdateBookingStatuses(): Promise<void> {
     const now = new Date();
 
-    console.log("teste");
-
     await prisma.booking.updateMany({
       where: {
         startTime: {

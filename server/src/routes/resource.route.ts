@@ -42,7 +42,7 @@ router.post("/", isAuthenticated, async (req: any, res) => {
     await auditLogUseCase.createAuditLog({
       userId: performedBy,
       action: AuditAction.CREATE,
-      entity: AuditEntity.USER,
+      entity: AuditEntity.RESOURCE,
       entityId: String(resource.id),
     });
 
