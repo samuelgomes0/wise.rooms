@@ -230,7 +230,6 @@ export function BookingRegistrationForm({
 
                       return date < today || date > oneMonthAhead;
                     }}
-                    initialFocus
                     locale={ptBR}
                   />
                 </PopoverContent>
