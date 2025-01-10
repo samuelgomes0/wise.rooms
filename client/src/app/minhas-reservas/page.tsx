@@ -173,19 +173,20 @@ export default function MinhasReservas() {
             </Modal>
           </div>
         </div>
-
-        <div className="flex gap-4 relative">
-          <SearchIcon
-            className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={20}
-            aria-hidden="true"
-          />
-          <SearchFilter
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            placeholder="Buscar por sala"
-            aria-label="Campo de busca"
-          />
+        <div className="flex gap-2 max-md:flex-col">
+          <div className="w-full flex gap-4 relative">
+            <SearchIcon
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+              aria-hidden="true"
+            />
+            <SearchFilter
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              placeholder="Buscar por sala"
+              aria-label="Campo de busca"
+            />
+          </div>
           <div className="relative">
             <Popover>
               <PopoverTrigger asChild>
@@ -197,7 +198,7 @@ export default function MinhasReservas() {
                   {dateFilter ? (
                     format(dateFilter, "PPP", { locale: ptBR })
                   ) : (
-                    <span className="hidden sm:block">Selecione uma data</span>
+                    <span>Selecione uma data</span>
                   )}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>

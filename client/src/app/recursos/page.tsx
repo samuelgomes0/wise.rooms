@@ -172,8 +172,8 @@ export default function Recursos() {
             </Modal>
           </div>
         </div>
-        <div className="flex gap-4">
-          <div className="flex gap-4 relative flex-1">
+        <div className="flex gap-2 max-md:flex-col">
+          <div className="w-full flex gap-4 relative">
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
@@ -191,7 +191,7 @@ export default function Recursos() {
             onValueChange={setStatusFilter}
             aria-label="Filtrar por sala"
           >
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="w-[200px] max-md:w-full">
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>
