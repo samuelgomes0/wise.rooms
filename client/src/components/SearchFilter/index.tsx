@@ -13,7 +13,7 @@ function SearchFilter({
     <Input
       type="text"
       placeholder={placeholder}
-      className="sm:w-full pl-10 w-0"
+      className="w-full pl-10"
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
     />

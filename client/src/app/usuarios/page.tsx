@@ -24,6 +24,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Notification, Role } from "@/constants";
@@ -34,13 +41,6 @@ import roleServiceInstance from "@/services/RoleService";
 import userServiceInstance from "@/services/UserService";
 import { ApiError, IRole, IUser } from "@/types";
 import { errorHandler, Filter } from "@/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@radix-ui/react-select";
 import { MoreHorizontalIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -161,8 +161,8 @@ export default function Usuarios() {
             </Modal>
           </div>
         </div>
-        <div className="flex gap-4">
-          <div className="flex gap-4 relative flex-1">
+        <div className="flex gap-2 max-md:flex-col">
+          <div className="w-full flex gap-4 relative">
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
@@ -180,7 +180,7 @@ export default function Usuarios() {
             onValueChange={setStatusFilter}
             aria-label="Filtrar por cargo"
           >
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="w-[200px] max-md:w-full">
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>

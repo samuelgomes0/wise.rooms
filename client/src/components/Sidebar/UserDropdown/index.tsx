@@ -44,7 +44,7 @@ export function UserDropdown() {
               <ChevronDownIcon size={20} />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-52">
+          <DropdownMenuContent className="w-64 max-md:w-[calc(100vw-2rem)]">
             <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem disabled>Perfil (em breve)</DropdownMenuItem>
