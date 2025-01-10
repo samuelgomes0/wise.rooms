@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +27,11 @@ function Modal({
 }: ModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {triggerText && <DialogTrigger>{triggerText}</DialogTrigger>}
+      {triggerText && (
+        <DialogTrigger asChild>
+          <Button>{triggerText}</Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

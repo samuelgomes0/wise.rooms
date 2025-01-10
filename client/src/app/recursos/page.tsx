@@ -143,16 +143,14 @@ export default function Recursos() {
               </div>
             </div>
           </div>
-          <Button aria-label="Adicionar novo recurso">
-            <Modal
-              title="Adicionar Novo Recurso"
-              triggerText="+ Novo Recurso"
-              isOpen={isModalOpen}
-              onOpenChange={setIsModalOpen}
-            >
-              <ResourceRegistrationForm onCloseModal={handleModalClose} />
-            </Modal>
-          </Button>
+          <Modal
+            title="Adicionar Novo Recurso"
+            triggerText="+ Novo Recurso"
+            isOpen={isModalOpen}
+            onOpenChange={setIsModalOpen}
+          >
+            <ResourceRegistrationForm onCloseModal={handleModalClose} />
+          </Modal>
         </div>
         <div className="flex gap-4">
           <div className="flex gap-4 relative flex-1">

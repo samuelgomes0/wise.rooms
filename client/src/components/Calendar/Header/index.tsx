@@ -88,19 +88,17 @@ export default function CalendarHeader({
       </h2>
       {isAuthenticated ? (
         <div className="header-modal w-full sm:w-auto flex justify-center sm:justify-end">
-          <Button>
-            <Modal
-              title="Adicionar Nova Reserva"
-              triggerText="+ Nova Reserva"
-              isOpen={isModalOpen}
-              onOpenChange={setIsModalOpen}
-            >
-              <BookingRegistrationForm
-                onCloseModal={handleModalClose}
-                onBookingCreated={onBookingCreated}
-              />
-            </Modal>
-          </Button>
+          <Modal
+            title="Adicionar Nova Reserva"
+            triggerText="+ Nova Reserva"
+            isOpen={isModalOpen}
+            onOpenChange={setIsModalOpen}
+          >
+            <BookingRegistrationForm
+              onCloseModal={handleModalClose}
+              onBookingCreated={onBookingCreated}
+            />
+          </Modal>
         </div>
       ) : null}
     </div>

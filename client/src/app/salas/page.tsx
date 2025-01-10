@@ -115,16 +115,14 @@ export default function Salas() {
               </div>
             </div>
           </div>
-          <Button aria-label="Adicionar nova sala">
-            <Modal
-              title="Adicionar Nova Sala"
-              triggerText="+ Nova Sala"
-              isOpen={isModalOpen}
-              onOpenChange={setIsModalOpen}
-            >
-              <RoomRegistrationForm onCloseModal={handleModalClose} />
-            </Modal>
-          </Button>
+          <Modal
+            title="Adicionar Nova Sala"
+            triggerText="+ Nova Sala"
+            isOpen={isModalOpen}
+            onOpenChange={setIsModalOpen}
+          >
+            <RoomRegistrationForm onCloseModal={handleModalClose} />
+          </Modal>
         </div>
         <div className="flex gap-4 relative">
           <SearchIcon

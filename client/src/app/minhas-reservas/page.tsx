@@ -1,7 +1,6 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import BookingEditForm from "@/components/Forms/BookingEditForm";
 import { BookingRegistrationForm } from "@/components/Forms/BookingRegistrationForm";
 import GenericTable from "@/components/GenericTable";
 import Modal from "@/components/Modal";
@@ -16,6 +15,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   DropdownMenu,
@@ -37,36 +37,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Notification, Role } from "@/constants";
 import { AuthContext } from "@/contexts/AuthContext";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import { useToast } from "@/hooks/use-toast";
 import bookingServiceInstance from "@/services/BookingService";
-import { IBooking } from "@/types";
-import { Filter, getStatusBadge } from "@/utils";
-import { formatDate } from "@/utils/formatDate.util";
-import { format } from "date-fns";
+import { ApiError, IBooking } from "@/types";
+import { errorHandler, Filter, getStatusBadge } from "@/utils";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CalendarIcon, MoreHorizontalIcon, SearchIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  FilterIcon,
+  MoreHorizontalIcon,
+  SearchIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
-export default function Reservas() {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState<IBooking | null>(null);
+export default function MinhasReservas() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalClose = () => {
-    setIsAddModalOpen(false);
-    setIsEditModalOpen(false);
-    setSelectedBooking(null);
+    setIsModalOpen(false);
     listBookings();
-  };
-
-  const handleDetailsDialogClose = () => {
-    setIsDetailsDialogOpen(false);
-    setSelectedBooking(null);
   };
 
   const [bookings, setBookings] = useState<IBooking[]>([]);
@@ -94,8 +90,6 @@ export default function Reservas() {
     setIsLoading(true);
 
     try {
-      if (!user) return;
-
       const data = await bookingServiceInstance.findBookingsByUser(user?.id);
       setBookings(data);
     } catch (error) {
@@ -106,12 +100,17 @@ export default function Reservas() {
   };
 
   const handleCancelBooking = async (bookingId: string) => {
-    await bookingServiceInstance.cancelBooking(bookingId);
-    await listBookings();
-    toast({
-      title: Notification.SUCCESS.BOOKING.CANCEL_TITLE,
-      description: Notification.SUCCESS.BOOKING.CANCEL_DESCRIPTION,
-    });
+    try {
+      await bookingServiceInstance.cancelBooking(bookingId);
+      await listBookings();
+      toast({
+        title: Notification.SUCCESS.BOOKING.CANCEL_TITLE,
+        description: Notification.SUCCESS.BOOKING.CANCEL_DESCRIPTION,
+      });
+    } catch (error) {
+      const { title, description } = errorHandler(error as ApiError);
+      toast({ variant: "destructive", title, description });
+    }
   };
 
   const router = useRouter();
@@ -122,63 +121,94 @@ export default function Reservas() {
   }, []);
 
   return (
-    <div className="pt-8 w-4/5 mx-auto overflow-hidden flex flex-col justify-between h-screen">
-      <main className="flex-1">
-        <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex items-center gap-4">
-              <Avatar>
-                <AvatarFallback>{user?.name[0]}</AvatarFallback>
-              </Avatar>
-              <div>
-                <h1 className="text-2xl font-bold">Minhas reservas</h1>
-                <p className="text-sm text-read">
-                  {Role.label[user?.role.name]}
-                </p>
+    <div
+      className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen"
+      role="main"
+    >
+      <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center gap-4 sm:flex-row">
+            <Avatar className="hidden sm:block">
+              <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
+            </Avatar>
+            <div>
+              <h1 className="text-2xl font-bold">Minhas Reservas</h1>
+              <div className="text-sm text-read">
+                {user?.role.name ? (
+                  <span>
+                    {Role.label[user.role.name as keyof typeof Role.label]}
+                  </span>
+                ) : (
+                  <Skeleton className="w-24 h-3" />
+                )}
               </div>
             </div>
-            <Button onClick={() => setIsAddModalOpen(true)}>
-              + Nova Reserva
-            </Button>
           </div>
-          <div className="flex gap-4 relative">
-            <SearchIcon
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
+          <Modal
+            title="Adicionar Nova Reserva"
+            triggerText="+ Nova Reserva"
+            isOpen={isModalOpen}
+            onOpenChange={setIsModalOpen}
+          >
+            <BookingRegistrationForm
+              onCloseModal={handleModalClose}
+              onBookingCreated={listBookings}
             />
-            <SearchFilter
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              placeholder="Buscar por sala"
-            />
-            <div className="relative">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-[200px] justify-start text-left font-normal"
-                  >
-                    {dateFilter ? (
-                      format(dateFilter, "PPP", { locale: ptBR })
-                    ) : (
-                      <span>Selecione uma data</span>
-                    )}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dateFilter}
-                    onSelect={setDateFilter}
-                    initialFocus
-                    locale={ptBR}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[300px]">
+          </Modal>
+        </div>
+
+        <div className="flex gap-4 relative">
+          <SearchIcon
+            className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={20}
+            aria-hidden="true"
+          />
+          <SearchFilter
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            placeholder="Buscar por sala"
+            aria-label="Campo de busca"
+          />
+          <div className="relative">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600"
+                  aria-label="Filtrar por data"
+                >
+                  {dateFilter ? (
+                    format(dateFilter, "PPP", { locale: ptBR })
+                  ) : (
+                    <span className="hidden sm:block">Selecione uma data</span>
+                  )}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={dateFilter}
+                  onSelect={setDateFilter}
+                  initialFocus
+                  locale={ptBR}
+                  aria-label="Calendário de seleção de data"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="relative">
+            <Select
+              value={statusFilter}
+              onValueChange={setStatusFilter}
+              aria-label="Filtrar por status"
+            >
+              <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
+                <FilterIcon
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={20}
+                  aria-hidden="true"
+                />
                 <SelectValue placeholder="Todos" />
               </SelectTrigger>
               <SelectContent>
@@ -191,8 +221,10 @@ export default function Reservas() {
               </SelectContent>
             </Select>
           </div>
-        </header>
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        </div>
+      </header>
+      <main className="flex-1 overflow-y-auto">
+        <div className="bg-white rounded-lg shadow-sm">
           <GenericTable
             columns={[
               { header: "Sala", accessor: "room" },
@@ -202,139 +234,108 @@ export default function Reservas() {
               { header: "Status", accessor: "status" },
               { header: "Opções", accessor: "options" },
             ]}
-            data={
-              paginatedBookings.length > 0
-                ? paginatedBookings.map((booking: IBooking) => ({
-                    ...booking,
-                    room: booking.room.name,
-                    date: formatDate(booking.date, "dd/MM/yyyy"),
-                    startTime: formatDate(booking.startTime, "HH:mm"),
-                    endTime: formatDate(booking.endTime, "HH:mm"),
-                    status: getStatusBadge(booking.status),
-                    options: (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            className="w-12 h-full"
-                            variant="ghost"
-                            aria-label="Ações da reserva"
-                          >
-                            <MoreHorizontalIcon />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-full">
-                          <DropdownMenuLabel>Ações</DropdownMenuLabel>
+            data={paginatedBookings.map((booking: IBooking) => ({
+              ...booking,
+              room: booking.room.name,
+              date: format(booking.date, "dd/MM/yyyy"),
+              startTime: format(
+                parseISO(booking.startTime.toString()),
+                "HH:mm"
+              ),
+              endTime: format(parseISO(booking.endTime.toString()), "HH:mm"),
+              status: getStatusBadge(booking.status),
+              options: (
+                <Dialog>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        className="w-12 h-full"
+                        variant="ghost"
+                        aria-label="Ações da reserva"
+                      >
+                        <MoreHorizontalIcon />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-full">
+                      <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <DialogTrigger>Ver detalhes</DialogTrigger>
+                      </DropdownMenuItem>
+                      {booking.status !== "CANCELLED" && (
+                        <>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
-                            onClick={() => {
-                              setSelectedBooking(booking);
-                              setIsDetailsDialogOpen(true);
-                            }}
+                            className="text-red-600"
+                            onClick={() => handleCancelBooking(booking.id)}
                           >
-                            Ver detalhes
+                            Cancelar reserva
                           </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => {
-                              setSelectedBooking(booking);
-                              setIsEditModalOpen(true);
-                            }}
-                          >
-                            Editar reserva
-                          </DropdownMenuItem>
-                          {booking.status !== "CANCELLED" && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                className="text-red-600"
-                                onClick={() => handleCancelBooking(booking.id)}
-                              >
-                                Cancelar reserva
-                              </DropdownMenuItem>
-                            </>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl">
+                        Detalhes da Reserva
+                      </DialogTitle>
+                    </DialogHeader>
+                    <Separator />
+                    <DialogDescription className="text-back grid grid-cols-1 grid-row-3 gap-4">
+                      <div className="grid grid-cols-3 items-center justify-between">
+                        <div className="flex flex-col">
+                          <strong>Sala</strong> {booking.room.name}
+                        </div>
+                        <div className="flex flex-col">
+                          <strong>Data</strong>{" "}
+                          {format(booking.date, "dd/MM/yyyy")}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3">
+                        <div className="flex flex-col">
+                          <strong>Horário</strong>{" "}
+                          {format(
+                            parseISO(booking.startTime.toString()),
+                            "HH:mm"
                           )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    ),
-                  }))
-                : []
-            }
-          />
-        </div>
-        <div className="flex justify-between items-center mt-4">
-          <p className="text-sm text-gray-500">
-            Exibindo {paginatedBookings.length} de {filteredBookings.length}{" "}
-            reservas
-          </p>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
+                          -
+                          {format(
+                            parseISO(booking.endTime.toString()),
+                            "HH:mm"
+                          )}
+                        </div>
+                        <div className="grid gap-1 w-2/4">
+                          <strong>Status</strong>{" "}
+                          {getStatusBadge(booking.status)}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex flex-col break-words">
+                          <strong>Descrição</strong>{" "}
+                          {booking.description || "Sem descrição"}
+                        </div>
+                      </div>
+                    </DialogDescription>
+                  </DialogContent>
+                </Dialog>
+              ),
+            }))}
           />
         </div>
       </main>
-      <Footer />
-      {/* Modal para adicionar reserva */}
-      <Modal
-        title="Adicionar Nova Reserva"
-        isOpen={isAddModalOpen}
-        onOpenChange={setIsAddModalOpen}
-      >
-        <BookingRegistrationForm
-          onCloseModal={handleModalClose}
-          onBookingCreated={listBookings}
+      <div className="flex flex-col-reverse gap-4 sm:flex-row justify-between items-center mt-4">
+        <p className="text-sm text-gray-500">
+          Exibindo {paginatedBookings.length} de {filteredBookings.length}{" "}
+          reservas
+        </p>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
-      </Modal>
-      {/* Modal para editar reserva */}
-      <Modal
-        title="Editar Reserva"
-        isOpen={isEditModalOpen}
-        onOpenChange={(open) => {
-          setIsEditModalOpen(open);
-          if (!open) setSelectedBooking(null);
-        }}
-      >
-        {selectedBooking && (
-          <BookingEditForm
-            booking={selectedBooking}
-            onCloseModal={handleModalClose}
-            onBookingCreated={listBookings}
-          />
-        )}
-      </Modal>
-      {/* Dialog para ver detalhes */}
-      <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Detalhes do Agendamento</DialogTitle>
-          </DialogHeader>
-          <DialogDescription>
-            {selectedBooking && (
-              <div>
-                <p>
-                  <strong>Sala:</strong> {selectedBooking.room.name}
-                </p>
-                <p>
-                  <strong>Data:</strong>{" "}
-                  {formatDate(selectedBooking.date, "dd/MM/yyyy")}
-                </p>
-                <p>
-                  <strong>Horário:</strong>{" "}
-                  {formatDate(selectedBooking.startTime, "HH:mm")} -{" "}
-                  {formatDate(selectedBooking.endTime, "HH:mm")}
-                </p>
-                <p>
-                  <strong>Status:</strong>{" "}
-                  {getStatusBadge(selectedBooking.status)}
-                </p>
-                <p>
-                  <strong>Descrição:</strong>{" "}
-                  {selectedBooking.description || "Sem descrição"}
-                </p>
-              </div>
-            )}
-          </DialogDescription>
-        </DialogContent>
-      </Dialog>
+      </div>
+      <Footer />
     </div>
   );
 }

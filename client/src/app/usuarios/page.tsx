@@ -131,16 +131,14 @@ export default function Usuarios() {
               </div>
             </div>
           </div>
-          <Button aria-label="Adicionar novo usuário">
-            <Modal
-              title="Adicionar Novo Usuário"
-              triggerText="+ Novo Usuário"
-              isOpen={isModalOpen}
-              onOpenChange={setIsModalOpen}
-            >
-              <UserRegistrationForm onCloseModal={handleModalClose} />
-            </Modal>
-          </Button>
+          <Modal
+            title="Adicionar Novo Usuário"
+            triggerText="+ Novo Usuário"
+            isOpen={isModalOpen}
+            onOpenChange={setIsModalOpen}
+          >
+            <UserRegistrationForm onCloseModal={handleModalClose} />
+          </Modal>
         </div>
         <div className="flex gap-4">
           <div className="flex gap-4 relative flex-1">

@@ -144,38 +144,17 @@ export default function Reservas() {
               </div>
             </div>
           </div>
-          <Button
-            className="hidden sm:block"
-            aria-label="Adicionar nova reserva"
+          <Modal
+            title="Adicionar Nova Reserva"
+            triggerText="+ Nova Reserva"
+            isOpen={isModalOpen}
+            onOpenChange={setIsModalOpen}
           >
-            <Modal
-              title="Adicionar Nova Reserva"
-              triggerText="+ Nova Reserva"
-              isOpen={isModalOpen}
-              onOpenChange={setIsModalOpen}
-            >
-              <BookingRegistrationForm
-                onCloseModal={handleModalClose}
-                onBookingCreated={listBookings}
-              />
-            </Modal>
-          </Button>
-          <Button
-            className="block sm:hidden"
-            aria-label="Adicionar nova reserva"
-          >
-            <Modal
-              title="Adicionar Nova Reserva"
-              triggerText="+"
-              isOpen={isModalOpen}
-              onOpenChange={setIsModalOpen}
-            >
-              <BookingRegistrationForm
-                onCloseModal={handleModalClose}
-                onBookingCreated={listBookings}
-              />
-            </Modal>
-          </Button>
+            <BookingRegistrationForm
+              onCloseModal={handleModalClose}
+              onBookingCreated={listBookings}
+            />
+          </Modal>
         </div>
 
         <div className="flex gap-4 relative">
