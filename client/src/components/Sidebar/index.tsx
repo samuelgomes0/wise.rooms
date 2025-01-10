@@ -22,7 +22,7 @@ export function Sidebar() {
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 md:w-72 w-full
-        fixed lg:sticky h-screen top-0 left-0 bg-white z-50 shadow-sm transition-transform transform-gpu ease-in-out duration-300
+        fixed lg:sticky h-screen top-0 left-0 bg-white z-50 shadow-md transition-transform transform-gpu ease-in-out duration-300
         ${pathName === "/entrar" ? "hidden" : ""}`}
         role="complementary"
         aria-hidden={pathName === "/entrar"}

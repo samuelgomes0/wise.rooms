@@ -8,10 +8,11 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { DEFAULT_TIME_SLOTS } from "@/constants";
+import { LoadingContext } from "@/contexts/LoadingContext";
 import { IBooking } from "@/types";
 import { attributeColorToRoom, getStatusBadge } from "@/utils";
 import { ChevronLeft, ChevronRight, ZoomInIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Header from "./Header";
 
 interface WeeklyViewProps {
@@ -20,6 +21,8 @@ interface WeeklyViewProps {
 }
 
 export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
+  const { isLoading } = useContext(LoadingContext);
+
   const adjustedStartDate = new Date(startDate);
   const dayOfWeek = adjustedStartDate.getDay();
   adjustedStartDate.setDate(adjustedStartDate.getDate() - dayOfWeek);
@@ -113,7 +116,8 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
                   key={`cell-${rowIndex}-${colIndex}`}
                   className={`shadow-sm rounded relative flex flex-wrap items-start gap-1 p-1
                 ${isCurrentTime ? "bg-[rgba(23,23,23,0.1)]" : "bg-white"} 
-                ${colIndex === 0 ? "border-l" : ""}`}
+                ${colIndex === 0 ? "border-l" : ""}
+                ${bookings.length <= 0 && "animate-pulse bg-neutral-300"}`}
                 >
                   {colIndex === 0 && (
                     <span className="text-sm font-medium absolute flex h-full top-0 items-center -left-14 text-gray-600 whitespace-pre-wrap">

@@ -65,7 +65,7 @@ export default function MinhasReservas() {
   const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined);
   const [statusFilter, setStatusFilter] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 30;
 
   const { toast } = useToast();
   const { user, isAuthenticated } = useContext(AuthContext);

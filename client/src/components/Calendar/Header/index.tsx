@@ -20,10 +20,12 @@ export default function CalendarHeader({
   const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleModalClose = (modalType: "mobile" | "desktop") => {
+  const handleModalClose = (modalType?: "mobile" | "desktop") => {
     if (modalType === "mobile") {
       setIsMobileModalOpen(false);
     }
+
+    setIsModalOpen(!isModalOpen);
   };
 
   const { isAuthenticated } = useContext(AuthContext);
@@ -96,7 +98,7 @@ export default function CalendarHeader({
               onOpenChange={setIsMobileModalOpen}
             >
               <BookingRegistrationForm
-                onCloseModal={() => handleModalClose("mobile")}
+                onCloseModal={() => handleModalClose()}
               />
             </Modal>
           </div>
