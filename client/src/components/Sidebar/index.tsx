@@ -19,12 +19,11 @@ export function Sidebar() {
     <div className="flex">
       <aside
         id="sidebar-navigation"
-        className={`
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-          lg:translate-x-0 md:w-72 w-full
-          fixed lg:sticky h-screen top-0 left-0 bg-white z-50 shadow-sm transition-transform transform-gpu ease-in-out duration-300
-          ${pathName === "/entrar" ? "hidden" : ""} 
-        `}
+        className={`${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 md:w-72 w-full
+        fixed lg:sticky h-screen top-0 left-0 bg-white z-50 shadow-sm transition-transform transform-gpu ease-in-out duration-300
+        ${pathName === "/entrar" ? "hidden" : ""}`}
         role="complementary"
         aria-hidden={pathName === "/entrar"}
       >
@@ -43,9 +42,11 @@ export function Sidebar() {
         aria-label="Alterar visibilidade do menu"
         aria-expanded={sidebarOpen}
         aria-controls="sidebar-navigation"
-        className="fixed top-4 right-4 lg:hidden z-50 bg-black shadow-sm"
+        className={`fixed top-4 left-4 z-50 shadow-sm bg-black text-white transition-transform duration-300 ease-in-out transform
+          ${sidebarOpen ? "translate-x-[calc(100vw-4.5rem)]" : "translate-x-0"} 
+          lg:hidden`}
       >
-        <MenuIcon aria-hidden="true" color="white" />
+        <MenuIcon aria-hidden="true" />
       </Button>
     </div>
   );
