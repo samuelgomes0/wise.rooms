@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Clock10Icon, Clock2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -35,7 +35,6 @@ import { Notification, Role, SEPARATED_DEFAULT_TIME_SLOTS } from "@/constants";
 import { AuthContext } from "@/contexts/AuthContext";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import { registerBookingSchema } from "@/schemas";
 import bookingServiceInstance from "@/services/BookingService";
 import roomServiceInstance from "@/services/RoomService";
@@ -197,28 +196,29 @@ export function BookingRegistrationForm({
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem className="flex flex-col z-50">
+            <FormItem className="flex flex-col">
               <FormLabel>Data da Reserva</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
+                      variant="outline"
+                      className="flex-1 justify-start text-left font-normal text-gray-600"
+                      aria-label="Filtrar por data"
                     >
                       {field.value ? (
                         format(field.value, "PPP", { locale: ptBR })
                       ) : (
-                        <span>Escolha uma data</span>
+                        <span>Selecione uma data</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ml-auto opacity-50" size={18} />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto" align="start">
+                <PopoverContent
+                  className="max-md:w-[calc(100%+1.5rem)]"
+                  align="start"
+                >
                   <Calendar
                     mode="single"
                     selected={field.value}
@@ -255,6 +255,7 @@ export function BookingRegistrationForm({
                 >
                   <FormControl>
                     <SelectTrigger>
+                      <Clock2Icon className="text-gray-400" size={18} />
                       <SelectValue placeholder="Selecione o horário" />
                     </SelectTrigger>
                   </FormControl>
@@ -282,6 +283,7 @@ export function BookingRegistrationForm({
                 >
                   <FormControl>
                     <SelectTrigger>
+                      <Clock10Icon className="text-gray-400" size={18} />
                       <SelectValue placeholder="Selecione o horário" />
                     </SelectTrigger>
                   </FormControl>

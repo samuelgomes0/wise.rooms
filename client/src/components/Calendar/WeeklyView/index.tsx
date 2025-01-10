@@ -147,7 +147,7 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
                             <strong>{booking.room.name}</strong>
                             <p>{booking.user.name}</p>
                           </div>
-                          <ZoomInIcon size={16} />
+                          <ZoomInIcon size={18} />
                         </div>
                       </DialogTrigger>
                       <DialogContent className="max-md:max-w-sm rounded-sm">
@@ -284,7 +284,7 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
                             <strong>{booking.room.name}</strong>
                             <p>{booking.user.name}</p>
                           </div>
-                          <ZoomInIcon size={16} />
+                          <ZoomInIcon size={18} />
                         </div>
                       </DialogTrigger>
                       <DialogContent className="max-md:max-w-sm rounded-sm">

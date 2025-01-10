@@ -148,7 +148,7 @@ export default function Salas() {
         <div className="flex gap-4 relative">
           <SearchIcon
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={20}
+            size={18}
             aria-hidden="true"
           />
           <SearchFilter

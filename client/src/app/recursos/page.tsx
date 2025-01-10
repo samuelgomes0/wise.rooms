@@ -176,7 +176,7 @@ export default function Recursos() {
           <div className="flex-1 flex gap-4 relative">
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
+              size={18}
               aria-hidden="true"
             />
             <SearchFilter
@@ -192,7 +192,7 @@ export default function Recursos() {
             aria-label="Filtrar por sala"
           >
             <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
-              <HouseIcon className="mr-3 text-gray-400" size={20} />
+              <HouseIcon className="mr-3 text-gray-400" size={18} />
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>

@@ -39,9 +39,9 @@ export function UserDropdown() {
               className="w-full justify-between truncate"
               aria-label="Menu do usuário"
             >
-              <User2Icon className="mr-2 flex-shrink-0" size={20} />
+              <User2Icon className="mr-2 flex-shrink-0" size={18} />
               <span className="truncate mr-2">{user?.name}</span>
-              <ChevronDownIcon size={20} />
+              <ChevronDownIcon size={18} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-64 max-md:w-[calc(100vw-2rem)]">
@@ -53,7 +53,7 @@ export function UserDropdown() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
-              <LogOutIcon className="mr-2" size={16} />
+              <LogOutIcon className="mr-2" size={18} />
               <span>Sair</span>
             </DropdownMenuItem>
           </DropdownMenuContent>

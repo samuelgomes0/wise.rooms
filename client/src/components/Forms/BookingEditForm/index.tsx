@@ -175,7 +175,7 @@ function BookingEditForm({
                       ) : (
                         <span>Escolha uma data</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ml-auto opacity-50" size={18} />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>

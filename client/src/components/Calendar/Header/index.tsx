@@ -78,13 +78,13 @@ export default function CalendarHeader({
       <div className="flex justify-between md:justify-center max-md:w-full">
         <div className="header-buttons flex gap-2 sm:gap-4 justify-center sm:justify-start w-full sm:w-auto">
           <Button size="icon" variant="outline" onClick={handlePreviousWeek}>
-            <ChevronLeftIcon size={16} />
+            <ChevronLeftIcon size={18} />
           </Button>
           <Button size="default" variant="default" onClick={handleToday}>
             Hoje
           </Button>
           <Button size="icon" variant="outline" onClick={handleNextWeek}>
-            <ChevronRightIcon size={16} />
+            <ChevronRightIcon size={18} />
           </Button>
         </div>
         {isAuthenticated ? (

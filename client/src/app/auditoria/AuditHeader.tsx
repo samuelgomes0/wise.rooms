@@ -77,7 +77,7 @@ function AuditHeader({
         <div className="flex gap-4 relative flex-1">
           <SearchIcon
             className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={20}
+            size={18}
           />
           <SearchFilter
             searchTerm={searchTerm}
@@ -96,7 +96,7 @@ function AuditHeader({
               ) : (
                 <span>Selecione uma data</span>
               )}
-              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              <CalendarIcon className="ml-auto opacity-50" size={18} />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -111,7 +111,7 @@ function AuditHeader({
         </Popover>
         <Select value={actionFilter} onValueChange={setActionFilter}>
           <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
-            <PencilIcon className="mr-3 text-gray-400" size={20} />
+            <PencilIcon className="mr-3 text-gray-400" size={18} />
             <SelectValue placeholder="Todas" />
           </SelectTrigger>
           <SelectContent>
@@ -123,7 +123,7 @@ function AuditHeader({
         </Select>
         <Select value={entityFilter} onValueChange={setEntityFilter}>
           <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
-            <Layers3Icon className="mr-3 text-gray-400" size={20} />
+            <Layers3Icon className="mr-3 text-gray-400" size={18} />
             <SelectValue placeholder="Todas" />
           </SelectTrigger>
           <SelectContent>

@@ -128,9 +128,9 @@ export default function LoginPage() {
                   aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
                   {showPassword ? (
-                    <EyeIcon size={20} />
+                    <EyeIcon size={18} />
                   ) : (
-                    <EyeOffIcon size={20} />
+                    <EyeOffIcon size={18} />
                   )}
                 </button>
                 {form.formState.errors.password && (

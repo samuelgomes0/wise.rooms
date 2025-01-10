@@ -180,7 +180,7 @@ export default function Reservas() {
           <div className="flex-1 gap-4 relative">
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
+              size={18}
               aria-hidden="true"
             />
             <SearchFilter
@@ -202,7 +202,7 @@ export default function Reservas() {
                 ) : (
                   <span>Selecione uma data</span>
                 )}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                <CalendarIcon className="ml-auto opacity-50" size={18} />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -222,7 +222,7 @@ export default function Reservas() {
             aria-label="Filtrar por status"
           >
             <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
-              <CircleCheckIcon className="mr-3 text-gray-400" size={20} />
+              <CircleCheckIcon className="mr-3 text-gray-400" size={18} />
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>
