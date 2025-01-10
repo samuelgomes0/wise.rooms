@@ -13,7 +13,6 @@ export function Sidebar() {
 
   const handleSidebarVisibility = () => {
     setSidebarOpen(!sidebarOpen);
-    console.log("teste");
   };
 
   return (
