@@ -41,7 +41,7 @@ import roleServiceInstance from "@/services/RoleService";
 import userServiceInstance from "@/services/UserService";
 import { ApiError, IRole, IUser } from "@/types";
 import { errorHandler, Filter } from "@/utils";
-import { MoreHorizontalIcon, SearchIcon } from "lucide-react";
+import { CrownIcon, MoreHorizontalIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
@@ -180,7 +180,8 @@ export default function Usuarios() {
             onValueChange={setStatusFilter}
             aria-label="Filtrar por cargo"
           >
-            <SelectTrigger className="flex-1">
+            <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
+              <CrownIcon className="mr-3 text-gray-400" size={20} />
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>

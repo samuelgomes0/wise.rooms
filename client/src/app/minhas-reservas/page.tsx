@@ -50,7 +50,7 @@ import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   CalendarIcon,
-  FilterIcon,
+  CircleCheckIcon,
   MoreHorizontalIcon,
   SearchIcon,
 } from "lucide-react";
@@ -219,11 +219,7 @@ export default function MinhasReservas() {
             aria-label="Filtrar por status"
           >
             <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
-              <FilterIcon
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={20}
-                aria-hidden="true"
-              />
+              <CircleCheckIcon className="mr-3 text-gray-400" size={20} />
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>

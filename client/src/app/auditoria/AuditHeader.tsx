@@ -21,7 +21,12 @@ import { Role } from "@/constants";
 import { AuthContext } from "@/contexts/AuthContext";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CalendarIcon, FilterIcon, SearchIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  Layers3Icon,
+  PencilIcon,
+  SearchIcon,
+} from "lucide-react";
 import { useContext } from "react";
 
 interface AuditHeaderProps {
@@ -106,10 +111,7 @@ function AuditHeader({
         </Popover>
         <Select value={actionFilter} onValueChange={setActionFilter}>
           <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
-            <FilterIcon
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
-            />
+            <PencilIcon className="mr-3 text-gray-400" size={20} />
             <SelectValue placeholder="Todas" />
           </SelectTrigger>
           <SelectContent>
@@ -121,10 +123,7 @@ function AuditHeader({
         </Select>
         <Select value={entityFilter} onValueChange={setEntityFilter}>
           <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
-            <FilterIcon
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
-            />
+            <Layers3Icon className="mr-3 text-gray-400" size={20} />
             <SelectValue placeholder="Todas" />
           </SelectTrigger>
           <SelectContent>
