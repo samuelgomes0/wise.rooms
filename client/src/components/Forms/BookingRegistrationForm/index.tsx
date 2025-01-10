@@ -197,7 +197,7 @@ export function BookingRegistrationForm({
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col z-50">
               <FormLabel>Data da Reserva</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
