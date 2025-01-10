@@ -162,7 +162,7 @@ export default function Usuarios() {
           </div>
         </div>
         <div className="flex gap-2 max-md:flex-col">
-          <div className="w-full flex gap-4 relative">
+          <div className="flex-1 flex gap-4 relative">
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
@@ -180,7 +180,7 @@ export default function Usuarios() {
             onValueChange={setStatusFilter}
             aria-label="Filtrar por cargo"
           >
-            <SelectTrigger className="w-[200px] max-md:w-full">
+            <SelectTrigger className="flex-1">
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>

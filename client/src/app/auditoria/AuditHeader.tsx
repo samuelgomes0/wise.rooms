@@ -68,77 +68,73 @@ function AuditHeader({
           </div>
         </div>
       </div>
-      <div className="flex gap-4 relative">
-        <SearchIcon
-          className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-          size={20}
-        />
-        <SearchFilter
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          placeholder="Buscar por usuário"
-        />
-        <div className="relative">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600"
-              >
-                {dateFilter ? (
-                  format(dateFilter, "PPP", { locale: ptBR })
-                ) : (
-                  <span className="hidden sm:block">Selecione uma data</span>
-                )}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={dateFilter}
-                onSelect={setDateFilter}
-                initialFocus
-                locale={ptBR}
-              />
-            </PopoverContent>
-          </Popover>
+      <div className="flex gap-2 max-md:flex-col">
+        <div className="flex gap-4 relative flex-1">
+          <SearchIcon
+            className="absolute left-4 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={20}
+          />
+          <SearchFilter
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            placeholder="Buscar por usuário"
+          />
         </div>
-        <div className="relative">
-          <Select value={actionFilter} onValueChange={setActionFilter}>
-            <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
-              <FilterIcon
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={20}
-              />
-              <SelectValue placeholder="Todas" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Todas">Todas as ações</SelectItem>
-              <SelectItem value="CREATE">Criar</SelectItem>
-              <SelectItem value="UPDATE">Atualizar</SelectItem>
-              <SelectItem value="DELETE">Deletar</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Select value={entityFilter} onValueChange={setEntityFilter}>
-            <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
-              <FilterIcon
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={20}
-              />
-              <SelectValue placeholder="Todas" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Todas">Todas as entidades</SelectItem>
-              <SelectItem value="USER">Usuário</SelectItem>
-              <SelectItem value="ROOM">Sala</SelectItem>
-              <SelectItem value="RESOURCE">Recurso</SelectItem>
-              <SelectItem value="BOOKING">Reserva</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="flex-1 justify-start text-left font-normal text-gray-600"
+            >
+              {dateFilter ? (
+                format(dateFilter, "PPP", { locale: ptBR })
+              ) : (
+                <span>Selecione uma data</span>
+              )}
+              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={dateFilter}
+              onSelect={setDateFilter}
+              initialFocus
+              locale={ptBR}
+            />
+          </PopoverContent>
+        </Popover>
+        <Select value={actionFilter} onValueChange={setActionFilter}>
+          <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
+            <FilterIcon
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+            <SelectValue placeholder="Todas" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Todas">Todas as ações</SelectItem>
+            <SelectItem value="CREATE">Criar</SelectItem>
+            <SelectItem value="UPDATE">Atualizar</SelectItem>
+            <SelectItem value="DELETE">Deletar</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={entityFilter} onValueChange={setEntityFilter}>
+          <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
+            <FilterIcon
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+            <SelectValue placeholder="Todas" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Todas">Todas as entidades</SelectItem>
+            <SelectItem value="USER">Usuário</SelectItem>
+            <SelectItem value="ROOM">Sala</SelectItem>
+            <SelectItem value="RESOURCE">Recurso</SelectItem>
+            <SelectItem value="BOOKING">Reserva</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </header>
   );

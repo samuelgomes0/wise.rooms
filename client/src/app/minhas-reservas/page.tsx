@@ -174,7 +174,7 @@ export default function MinhasReservas() {
           </div>
         </div>
         <div className="flex gap-2 max-md:flex-col">
-          <div className="w-full flex gap-4 relative">
+          <div className="flex-1 flex gap-4 relative">
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
@@ -187,58 +187,54 @@ export default function MinhasReservas() {
               aria-label="Campo de busca"
             />
           </div>
-          <div className="relative">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600"
-                  aria-label="Filtrar por data"
-                >
-                  {dateFilter ? (
-                    format(dateFilter, "PPP", { locale: ptBR })
-                  ) : (
-                    <span>Selecione uma data</span>
-                  )}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={dateFilter}
-                  onSelect={setDateFilter}
-                  initialFocus
-                  locale={ptBR}
-                  aria-label="Calendário de seleção de data"
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-          <div className="relative">
-            <Select
-              value={statusFilter}
-              onValueChange={setStatusFilter}
-              aria-label="Filtrar por status"
-            >
-              <SelectTrigger className="sm:w-[200px] w-full justify-start text-left font-normal text-gray-600">
-                <FilterIcon
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                  aria-hidden="true"
-                />
-                <SelectValue placeholder="Todos" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Todos">Todos os status</SelectItem>
-                <SelectItem value="PENDING">Pendente</SelectItem>
-                <SelectItem value="CONFIRMED">Confirmado</SelectItem>
-                <SelectItem value="ACTIVE">Ativo</SelectItem>
-                <SelectItem value="COMPLETED">Completado</SelectItem>
-                <SelectItem value="CANCELLED">Cancelado</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="flex-1 justify-start text-left font-normal text-gray-600"
+                aria-label="Filtrar por data"
+              >
+                {dateFilter ? (
+                  format(dateFilter, "PPP", { locale: ptBR })
+                ) : (
+                  <span>Selecione uma data</span>
+                )}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={dateFilter}
+                onSelect={setDateFilter}
+                initialFocus
+                locale={ptBR}
+                aria-label="Calendário de seleção de data"
+              />
+            </PopoverContent>
+          </Popover>
+          <Select
+            value={statusFilter}
+            onValueChange={setStatusFilter}
+            aria-label="Filtrar por status"
+          >
+            <SelectTrigger className="flex-1 justify-start text-left font-normal text-gray-600">
+              <FilterIcon
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+                aria-hidden="true"
+              />
+              <SelectValue placeholder="Todos" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Todos">Todos os status</SelectItem>
+              <SelectItem value="PENDING">Pendente</SelectItem>
+              <SelectItem value="CONFIRMED">Confirmado</SelectItem>
+              <SelectItem value="ACTIVE">Ativo</SelectItem>
+              <SelectItem value="COMPLETED">Completado</SelectItem>
+              <SelectItem value="CANCELLED">Cancelado</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </header>
       <main className="flex-1 overflow-y-auto">

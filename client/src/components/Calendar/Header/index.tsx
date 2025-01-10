@@ -18,16 +18,12 @@ export default function CalendarHeader({
   onBookingCreated,
 }: CalendarHeaderProps) {
   const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
-  const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalClose = (modalType: "mobile" | "desktop") => {
     if (modalType === "mobile") {
       setIsMobileModalOpen(false);
-    } else {
-      setIsDesktopModalOpen(false);
     }
-    listBookings();
   };
 
   const { isAuthenticated } = useContext(AuthContext);
