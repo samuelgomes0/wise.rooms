@@ -287,7 +287,7 @@ export function WeeklyView({ startDate, bookings }: WeeklyViewProps) {
                           <ZoomInIcon size={16} />
                         </div>
                       </DialogTrigger>
-                      <DialogContent>
+                      <DialogContent className="max-md:max-w-sm rounded-sm">
                         <DialogHeader>
                           <DialogTitle className="text-2xl">
                             Detalhes do Agendamento
