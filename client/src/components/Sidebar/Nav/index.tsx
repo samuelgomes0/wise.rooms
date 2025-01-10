@@ -20,7 +20,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
 
-export function Nav() {
+export function Nav({ onLinkClick }: { onLinkClick?: () => void }) {
   const { user, isAuthenticated } = useContext(AuthContext);
 
   const pathname = usePathname();
@@ -75,7 +75,7 @@ export function Nav() {
                   </Tooltip>
                 </TooltipProvider>
               ) : (
-                <Link href={path}>
+                <Link href={path} onClick={onLinkClick}>
                   <Button
                     variant="ghost"
                     className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}
@@ -94,7 +94,7 @@ export function Nav() {
                 <h3 className="font-bold text-sm py-2">Gerenciamento</h3>
                 {managementNavItems.map(({ label, icon: Icon, path }) => (
                   <li key={label}>
-                    <Link href={path}>
+                    <Link href={path} onClick={onLinkClick}>
                       <Button
                         variant="ghost"
                         className={`w-full justify-start ${isActive(path) ? "bg-gray-100" : ""}`}

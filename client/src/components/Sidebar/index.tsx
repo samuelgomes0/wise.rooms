@@ -13,6 +13,7 @@ export function Sidebar() {
 
   const handleSidebarVisibility = () => {
     setSidebarOpen(!sidebarOpen);
+    console.log("teste");
   };
 
   return (
@@ -31,7 +32,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between p-4">
           <span className="text-2xl font-bold">wise.rooms</span>
         </div>
-        <Nav />
+        <Nav onLinkClick={handleSidebarVisibility} />
         <div className="absolute bottom-0 w-full p-4 border-t">
           <UserDropdown />
         </div>
