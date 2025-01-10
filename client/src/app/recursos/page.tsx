@@ -47,11 +47,15 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function Recursos() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+  const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
 
-  const handleModalClose = async () => {
-    setIsModalOpen(false);
-    await listResources();
+  const handleModalClose = (modalType: "mobile" | "desktop") => {
+    if (modalType === "mobile") {
+      setIsMobileModalOpen(false);
+    } else {
+      setIsDesktopModalOpen(false);
+    }
   };
 
   const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -127,7 +131,7 @@ export default function Recursos() {
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <Avatar>
+            <Avatar className="max-md:hidden">
               <AvatarFallback>{user?.name[0]}</AvatarFallback>
             </Avatar>
             <div>
@@ -143,14 +147,30 @@ export default function Recursos() {
               </div>
             </div>
           </div>
-          <Modal
-            title="Adicionar Novo Recurso"
-            triggerText="+ Novo Recurso"
-            isOpen={isModalOpen}
-            onOpenChange={setIsModalOpen}
-          >
-            <ResourceRegistrationForm onCloseModal={handleModalClose} />
-          </Modal>
+          <div className="md:hidden">
+            <Modal
+              title="Adicionar Novo Recurso"
+              triggerText="+"
+              isOpen={isMobileModalOpen}
+              onOpenChange={setIsMobileModalOpen}
+            >
+              <ResourceRegistrationForm
+                onCloseModal={() => handleModalClose("mobile")}
+              />
+            </Modal>
+          </div>
+          <div className="max-md:hidden">
+            <Modal
+              title="Adicionar Novo Recurso"
+              triggerText="+ Novo Recurso"
+              isOpen={isDesktopModalOpen}
+              onOpenChange={setIsDesktopModalOpen}
+            >
+              <ResourceRegistrationForm
+                onCloseModal={() => handleModalClose("desktop")}
+              />
+            </Modal>
+          </div>
         </div>
         <div className="flex gap-4">
           <div className="flex gap-4 relative flex-1">
@@ -229,7 +249,7 @@ export default function Recursos() {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  <DialogContent>
+                  <DialogContent className="max-md:max-w-sm rounded-sm">
                     <DialogHeader>
                       <DialogTitle className="text-2xl">
                         Detalhes do Recurso

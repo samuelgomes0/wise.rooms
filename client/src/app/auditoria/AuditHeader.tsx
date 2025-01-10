@@ -51,7 +51,7 @@ function AuditHeader({
     <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center gap-4 sm:flex-row">
-          <Avatar className="hidden sm:block">
+          <Avatar className="max-md:hidden">
             <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
           </Avatar>
           <div>

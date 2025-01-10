@@ -58,12 +58,8 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function Reservas() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    listBookings();
-  };
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+  const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
 
   const [bookings, setBookings] = useState<IBooking[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -113,6 +109,15 @@ export default function Reservas() {
     }
   };
 
+  const handleModalClose = (modalType: "mobile" | "desktop") => {
+    if (modalType === "mobile") {
+      setIsMobileModalOpen(false);
+    } else {
+      setIsDesktopModalOpen(false);
+    }
+    listBookings();
+  };
+
   const router = useRouter();
 
   useEffect(() => {
@@ -128,7 +133,7 @@ export default function Reservas() {
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4 sm:flex-row">
-            <Avatar className="hidden sm:block">
+            <Avatar className="max-md:hidden">
               <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
             </Avatar>
             <div>
@@ -144,17 +149,32 @@ export default function Reservas() {
               </div>
             </div>
           </div>
-          <Modal
-            title="Adicionar Nova Reserva"
-            triggerText="+ Nova Reserva"
-            isOpen={isModalOpen}
-            onOpenChange={setIsModalOpen}
-          >
-            <BookingRegistrationForm
-              onCloseModal={handleModalClose}
-              onBookingCreated={listBookings}
-            />
-          </Modal>
+          <div className="md:hidden">
+            <Modal
+              title="Adicionar Nova Reserva"
+              triggerText="+"
+              isOpen={isMobileModalOpen}
+              onOpenChange={setIsMobileModalOpen}
+            >
+              <BookingRegistrationForm
+                onCloseModal={() => handleModalClose("mobile")}
+                onBookingCreated={listBookings}
+              />
+            </Modal>
+          </div>
+          <div className="max-md:hidden">
+            <Modal
+              title="Adicionar Nova Reserva"
+              triggerText="+ Nova Reserva"
+              isOpen={isDesktopModalOpen}
+              onOpenChange={setIsDesktopModalOpen}
+            >
+              <BookingRegistrationForm
+                onCloseModal={() => handleModalClose("desktop")}
+                onBookingCreated={listBookings}
+              />
+            </Modal>
+          </div>
         </div>
 
         <div className="flex gap-4 relative">
@@ -280,7 +300,7 @@ export default function Reservas() {
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  <DialogContent>
+                  <DialogContent className="max-md:max-w-sm rounded-sm">
                     <DialogHeader>
                       <DialogTitle className="text-2xl">
                         Detalhes do Agendamento

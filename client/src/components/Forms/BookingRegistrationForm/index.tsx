@@ -50,7 +50,7 @@ export function BookingRegistrationForm({
   onBookingCreated,
 }: {
   onCloseModal: () => void;
-  onBookingCreated: () => void;
+  onBookingCreated?: () => void;
 }) {
   const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [users, setUsers] = useState<IUser[]>([]);

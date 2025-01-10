@@ -48,11 +48,16 @@ import { useContext, useEffect, useState } from "react";
 export default function Usuarios() {
   const [users, setUsers] = useState<IUser[]>([]);
   const [roles, setRoles] = useState<IRole[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    listUsers();
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+  const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
+
+  const handleModalClose = (modalType: "mobile" | "desktop") => {
+    if (modalType === "mobile") {
+      setIsMobileModalOpen(false);
+    } else {
+      setIsDesktopModalOpen(false);
+    }
   };
 
   const [statusFilter, setStatusFilter] = useState("Todos");
@@ -115,7 +120,7 @@ export default function Usuarios() {
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <Avatar>
+            <Avatar className="max-md:hidden">
               <AvatarFallback>{user?.name[0]}</AvatarFallback>
             </Avatar>
             <div>
@@ -131,14 +136,30 @@ export default function Usuarios() {
               </div>
             </div>
           </div>
-          <Modal
-            title="Adicionar Novo Usuário"
-            triggerText="+ Novo Usuário"
-            isOpen={isModalOpen}
-            onOpenChange={setIsModalOpen}
-          >
-            <UserRegistrationForm onCloseModal={handleModalClose} />
-          </Modal>
+          <div className="md:hidden">
+            <Modal
+              title="Adicionar Novo Usuário"
+              triggerText="+"
+              isOpen={isMobileModalOpen}
+              onOpenChange={setIsMobileModalOpen}
+            >
+              <UserRegistrationForm
+                onCloseModal={() => handleModalClose("mobile")}
+              />
+            </Modal>
+          </div>
+          <div className="max-md:hidden">
+            <Modal
+              title="Adicionar Novo Usuário"
+              triggerText="+ Novo Usuário"
+              isOpen={isDesktopModalOpen}
+              onOpenChange={setIsDesktopModalOpen}
+            >
+              <UserRegistrationForm
+                onCloseModal={() => handleModalClose("desktop")}
+              />
+            </Modal>
+          </div>
         </div>
         <div className="flex gap-4">
           <div className="flex gap-4 relative flex-1">

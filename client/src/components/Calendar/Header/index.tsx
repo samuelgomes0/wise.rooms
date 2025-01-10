@@ -17,10 +17,17 @@ export default function CalendarHeader({
   setCurrentDate,
   onBookingCreated,
 }: CalendarHeaderProps) {
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+  const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const handleModalClose = (modalType: "mobile" | "desktop") => {
+    if (modalType === "mobile") {
+      setIsMobileModalOpen(false);
+    } else {
+      setIsDesktopModalOpen(false);
+    }
+    listBookings();
   };
 
   const { isAuthenticated } = useContext(AuthContext);
@@ -71,23 +78,39 @@ export default function CalendarHeader({
   };
 
   return (
-    <div className="bg-white m-auto rounded py-4 px-4 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-      <div className="header-buttons flex gap-2 sm:gap-4 justify-center sm:justify-start w-full sm:w-auto">
-        <Button size="icon" variant="outline" onClick={handlePreviousWeek}>
-          <ChevronLeftIcon size={16} />
-        </Button>
-        <Button size="default" variant="default" onClick={handleToday}>
-          Hoje
-        </Button>
-        <Button size="icon" variant="outline" onClick={handleNextWeek}>
-          <ChevronRightIcon size={16} />
-        </Button>
+    <div className="bg-white md:m-auto rounded py-4 px-4 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+      <div className="flex justify-between md:justify-center max-md:w-full">
+        <div className="header-buttons flex gap-2 sm:gap-4 justify-center sm:justify-start w-full sm:w-auto">
+          <Button size="icon" variant="outline" onClick={handlePreviousWeek}>
+            <ChevronLeftIcon size={16} />
+          </Button>
+          <Button size="default" variant="default" onClick={handleToday}>
+            Hoje
+          </Button>
+          <Button size="icon" variant="outline" onClick={handleNextWeek}>
+            <ChevronRightIcon size={16} />
+          </Button>
+        </div>
+        {isAuthenticated ? (
+          <div className="header-modal w-full sm:w-auto flex justify-end sm:justify-end md:hidden">
+            <Modal
+              title="Adicionar Nova Reserva"
+              triggerText="+"
+              isOpen={isMobileModalOpen}
+              onOpenChange={setIsMobileModalOpen}
+            >
+              <BookingRegistrationForm
+                onCloseModal={() => handleModalClose("mobile")}
+              />
+            </Modal>
+          </div>
+        ) : null}
       </div>
       <h2 className="header-title text-lg sm:text-xl font-semibold text-center flex-1">
         {getMonthRange()}
       </h2>
       {isAuthenticated ? (
-        <div className="header-modal w-full sm:w-auto flex justify-center sm:justify-end">
+        <div className="hidden header-modal w-full sm:w-auto md:flex justify-center sm:justify-end">
           <Modal
             title="Adicionar Nova Reserva"
             triggerText="+ Nova Reserva"
@@ -95,7 +118,7 @@ export default function CalendarHeader({
             onOpenChange={setIsModalOpen}
           >
             <BookingRegistrationForm
-              onCloseModal={handleModalClose}
+              onCloseModal={() => handleModalClose("mobile")}
               onBookingCreated={onBookingCreated}
             />
           </Modal>

@@ -39,13 +39,18 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function Salas() {
-  const [rooms, setRooms] = useState<IRoom[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+  const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    listRooms();
+  const handleModalClose = (modalType: "mobile" | "desktop") => {
+    if (modalType === "mobile") {
+      setIsMobileModalOpen(false);
+    } else {
+      setIsDesktopModalOpen(false);
+    }
   };
+
+  const [rooms, setRooms] = useState<IRoom[]>([]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,7 +104,7 @@ export default function Salas() {
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <Avatar>
+            <Avatar className="max-md:hidden">
               <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
             </Avatar>
             <div>
@@ -115,14 +120,30 @@ export default function Salas() {
               </div>
             </div>
           </div>
-          <Modal
-            title="Adicionar Nova Sala"
-            triggerText="+ Nova Sala"
-            isOpen={isModalOpen}
-            onOpenChange={setIsModalOpen}
-          >
-            <RoomRegistrationForm onCloseModal={handleModalClose} />
-          </Modal>
+          <div className="md:hidden">
+            <Modal
+              title="Adicionar Nova Sala"
+              triggerText="+"
+              isOpen={isMobileModalOpen}
+              onOpenChange={setIsMobileModalOpen}
+            >
+              <RoomRegistrationForm
+                onCloseModal={() => handleModalClose("mobile")}
+              />
+            </Modal>
+          </div>
+          <div className="max-md:hidden">
+            <Modal
+              title="Adicionar Nova Sala"
+              triggerText="+ Nova Sala"
+              isOpen={isDesktopModalOpen}
+              onOpenChange={setIsDesktopModalOpen}
+            >
+              <RoomRegistrationForm
+                onCloseModal={() => handleModalClose("desktop")}
+              />
+            </Modal>
+          </div>
         </div>
         <div className="flex gap-4 relative">
           <SearchIcon
@@ -182,7 +203,7 @@ export default function Salas() {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  <DialogContent>
+                  <DialogContent className="max-md:max-w-sm rounded-sm">
                     <DialogHeader>
                       <DialogTitle className="text-2xl">
                         Detalhes da Sala

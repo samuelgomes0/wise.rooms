@@ -32,7 +32,7 @@ function Modal({
           <Button>{triggerText}</Button>
         </DialogTrigger>
       )}
-      <DialogContent>
+      <DialogContent className="max-md:max-w-sm rounded-sm">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>

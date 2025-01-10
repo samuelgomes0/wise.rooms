@@ -58,13 +58,8 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function MinhasReservas() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    listBookings();
-  };
-
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+  const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
   const [bookings, setBookings] = useState<IBooking[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined);
@@ -73,7 +68,6 @@ export default function MinhasReservas() {
   const itemsPerPage = 10;
 
   const { toast } = useToast();
-
   const { user, isAuthenticated } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
 
@@ -86,9 +80,15 @@ export default function MinhasReservas() {
     itemsPerPage,
   });
 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated) return router.push("/");
+    listBookings();
+  }, []);
+
   const listBookings = async () => {
     setIsLoading(true);
-
     try {
       const data = await bookingServiceInstance.findBookingsByUser(user?.id);
       setBookings(data);
@@ -113,12 +113,14 @@ export default function MinhasReservas() {
     }
   };
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isAuthenticated) return router.push("/");
+  const handleModalClose = (modalType: "mobile" | "desktop") => {
+    if (modalType === "mobile") {
+      setIsMobileModalOpen(false);
+    } else {
+      setIsDesktopModalOpen(false);
+    }
     listBookings();
-  }, []);
+  };
 
   return (
     <div
@@ -128,12 +130,12 @@ export default function MinhasReservas() {
       <header className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4 sm:flex-row">
-            <Avatar className="hidden sm:block">
+            <Avatar className="max-md:hidden">
               <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
             </Avatar>
             <div>
               <h1 className="text-2xl font-bold">Minhas Reservas</h1>
-              <div className="text-sm text-read">
+              <div className="text-sm text-gray-500">
                 {user?.role.name ? (
                   <span>
                     {Role.label[user.role.name as keyof typeof Role.label]}
@@ -144,17 +146,32 @@ export default function MinhasReservas() {
               </div>
             </div>
           </div>
-          <Modal
-            title="Adicionar Nova Reserva"
-            triggerText="+ Nova Reserva"
-            isOpen={isModalOpen}
-            onOpenChange={setIsModalOpen}
-          >
-            <BookingRegistrationForm
-              onCloseModal={handleModalClose}
-              onBookingCreated={listBookings}
-            />
-          </Modal>
+          <div className="md:hidden">
+            <Modal
+              title="Adicionar Nova Reserva"
+              triggerText="+"
+              isOpen={isMobileModalOpen}
+              onOpenChange={setIsMobileModalOpen}
+            >
+              <BookingRegistrationForm
+                onCloseModal={() => handleModalClose("mobile")}
+                onBookingCreated={listBookings}
+              />
+            </Modal>
+          </div>
+          <div className="max-md:hidden">
+            <Modal
+              title="Adicionar Nova Reserva"
+              triggerText="+ Nova Reserva"
+              isOpen={isDesktopModalOpen}
+              onOpenChange={setIsDesktopModalOpen}
+            >
+              <BookingRegistrationForm
+                onCloseModal={() => handleModalClose("desktop")}
+                onBookingCreated={listBookings}
+              />
+            </Modal>
+          </div>
         </div>
 
         <div className="flex gap-4 relative">
@@ -262,6 +279,9 @@ export default function MinhasReservas() {
                       <DropdownMenuItem>
                         <DialogTrigger>Ver detalhes</DialogTrigger>
                       </DropdownMenuItem>
+                      <DropdownMenuItem disabled>
+                        Editar reserva (em breve)
+                      </DropdownMenuItem>
                       {booking.status !== "CANCELLED" && (
                         <>
                           <DropdownMenuSeparator />
@@ -275,10 +295,10 @@ export default function MinhasReservas() {
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  <DialogContent>
+                  <DialogContent className="max-md:max-w-sm rounded-sm">
                     <DialogHeader>
                       <DialogTitle className="text-2xl">
-                        Detalhes da Reserva
+                        Detalhes do Agendamento
                       </DialogTitle>
                     </DialogHeader>
                     <Separator />
@@ -289,20 +309,26 @@ export default function MinhasReservas() {
                         </div>
                         <div className="flex flex-col">
                           <strong>Data</strong>{" "}
-                          {format(booking.date, "dd/MM/yyyy")}
+                          {new Date(booking.date).toLocaleDateString("pt-BR")}
                         </div>
                       </div>
                       <div className="grid grid-cols-3">
                         <div className="flex flex-col">
                           <strong>Horário</strong>{" "}
-                          {format(
-                            parseISO(booking.startTime.toString()),
-                            "HH:mm"
-                          )}
-                          -
-                          {format(
-                            parseISO(booking.endTime.toString()),
-                            "HH:mm"
+                          {new Date(booking.startTime).toLocaleTimeString(
+                            "pt-BR",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}{" "}
+                          -{" "}
+                          {new Date(booking.endTime).toLocaleTimeString(
+                            "pt-BR",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
                           )}
                         </div>
                         <div className="grid gap-1 w-2/4">
