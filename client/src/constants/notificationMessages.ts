@@ -16,6 +16,9 @@ const SUCCESS = {
     CANCEL_TITLE: "Reserva cancelada com sucesso! 🎉",
     CANCEL_DESCRIPTION:
       "Sua reserva foi cancelada com sucesso. O horário da sala agora está disponível para outras reservas.",
+    UPDATE_TITLE: "Reserva atualizada com sucesso! 🎉",
+    UPDATE_DESCRIPTION:
+      "Os detalhes da sua reserva foram atualizados com sucesso. Confira as informações revisadas para garantir que tudo está correto.",
   },
   ROOM: {
     CREATE_TITLE: "Sala criada com sucesso! 🎉",
