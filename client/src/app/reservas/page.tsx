@@ -230,7 +230,7 @@ export default function Reservas() {
               <SelectItem value="PENDING">Pendente</SelectItem>
               <SelectItem value="CONFIRMED">Confirmado</SelectItem>
               <SelectItem value="ACTIVE">Ativo</SelectItem>
-              <SelectItem value="COMPLETED">Completado</SelectItem>
+              <SelectItem value="COMPLETED">Concluído</SelectItem>
               <SelectItem value="CANCELLED">Cancelado</SelectItem>
             </SelectContent>
           </Select>

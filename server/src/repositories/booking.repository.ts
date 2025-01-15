@@ -10,6 +10,9 @@ export class BookingRepository implements IBookingRepository {
         user: true,
         room: true,
       },
+      orderBy: {
+        date: "desc",
+      },
     });
   }
 

@@ -27,7 +27,7 @@ const getStatusBadge = (status: string) => {
           variant="secondary"
           className="bg-gray-200 text-gray-800 border-none"
         >
-          Completado
+          Concluído
         </Badge>
       );
     case "CANCELLED":
