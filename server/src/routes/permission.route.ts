@@ -12,4 +12,16 @@ router.get("/", async (req, res) => {
   res.json(permissions);
 });
 
+// router.get("/assign-permissions", async (req, res) => {
+//   await permissionRepository.assignPermissionsToRoles();
+
+//   res.json({ message: "Permissions assigned to roles" });
+// });
+
+// router.get("/create-permissions", async (req, res) => {
+//   await permissionRepository.createAllPermissions();
+
+//   res.json({ message: "Permissions created" });
+// });
+
 export default router;
