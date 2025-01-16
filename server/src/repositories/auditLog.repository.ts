@@ -16,6 +16,9 @@ export class AuditLogRepository implements IAuditLogRepository {
         entityId: true,
         createdAt: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }
 

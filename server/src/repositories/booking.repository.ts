@@ -11,7 +11,7 @@ export class BookingRepository implements IBookingRepository {
         room: true,
       },
       orderBy: {
-        date: "desc",
+        createdAt: "desc",
       },
     });
   }
@@ -21,6 +21,10 @@ export class BookingRepository implements IBookingRepository {
     return await prisma.booking.findUnique({
       where: {
         id: bookingId,
+      },
+      include: {
+        user: true,
+        room: true,
       },
     });
   }
@@ -32,6 +36,9 @@ export class BookingRepository implements IBookingRepository {
       },
       include: {
         room: true,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
   }
