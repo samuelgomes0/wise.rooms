@@ -40,6 +40,11 @@ function errorHandler(error: ApiError): ToastProps {
         title: Notification.ERROR.BOOKING.CONFLICT_TITLE,
         description: Notification.ERROR.BOOKING.CONFLICT_DESCRIPTION,
       };
+    case "BOOKING_ALREADY_COMPLETED":
+      return {
+        title: Notification.ERROR.BOOKING.ALREADY_COMPLETED_TITLE,
+        description: Notification.ERROR.BOOKING.ALREADY_COMPLETED_DESCRIPTION,
+      };
     default:
       return {
         title: "An error occurred.",

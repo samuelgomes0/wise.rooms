@@ -106,4 +106,34 @@ export class BookingUseCase {
 
     return this.bookingRepository.updateBookingStatus(bookingId, "CANCELLED");
   }
+
+  async completeBooking(bookingId: string, userId: string): Promise<IBooking> {
+    const booking = await this.bookingRepository.findBookingById(bookingId);
+
+    if (!booking)
+      throw new AppError("BOOKING_NOT_FOUND", "Booking not found.", 404);
+
+    if (booking.userId !== userId)
+      throw new AppError(
+        "UNAUTHORIZED",
+        "You are not authorized to complete this booking.",
+        403
+      );
+
+    if (booking.status === "COMPLETED")
+      throw new AppError(
+        "BOOKING_ALREADY_COMPLETED",
+        "Booking already completed.",
+        400
+      );
+
+    if (booking.status === "CANCELLED")
+      throw new AppError(
+        "BOOKING_ALREADY_CANCELLED",
+        "Booking already cancelled.",
+        400
+      );
+
+    return this.bookingRepository.updateBookingStatus(bookingId, "COMPLETED");
+  }
 }

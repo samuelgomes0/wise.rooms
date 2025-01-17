@@ -194,4 +194,32 @@ router.put("/:bookingId/cancel", isAuthenticated, async (req: any, res) => {
   }
 });
 
+// PUT /bookings/:bookingId/complete
+router.put("/:bookingId/complete", isAuthenticated, async (req: any, res) => {
+  const { bookingId } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    const booking = await bookingUseCase.completeBooking(bookingId, userId);
+
+    const response = {
+      message: "Booking completed successfully.",
+      booking,
+    };
+
+    await auditLogUseCase.createAuditLog({
+      userId,
+      action: AuditAction.UPDATE,
+      entity: AuditEntity.BOOKING,
+      entityId: booking.id,
+    });
+
+    return res.status(200).json(response);
+  } catch (error) {
+    const { code, message, statusCode } = error as AppError;
+
+    return res.status(statusCode).json({ code, message, statusCode });
+  }
+});
+
 export default router;

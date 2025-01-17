@@ -113,6 +113,20 @@ export default function MinhasReservas() {
     }
   };
 
+  const handleCompleteBooking = async (bookingId: string) => {
+    try {
+      await bookingServiceInstance.completeBooking(bookingId);
+      await listBookings();
+      toast({
+        title: Notification.SUCCESS.BOOKING.COMPLETE_TITLE,
+        description: Notification.SUCCESS.BOOKING.COMPLETE_DESCRIPTION,
+      });
+    } catch (error) {
+      const { title, description } = errorHandler(error as ApiError);
+      toast({ variant: "destructive", title, description });
+    }
+  };
+
   const handleModalClose = (modalType: "mobile" | "desktop") => {
     if (modalType === "mobile") {
       setIsMobileModalOpen(false);
@@ -275,17 +289,29 @@ export default function MinhasReservas() {
                       <DropdownMenuItem disabled>
                         Editar reserva (em breve)
                       </DropdownMenuItem>
-                      {booking.status !== "CANCELLED" && (
+                      {booking.status === "ACTIVE" && (
                         <>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
-                            className="text-red-600"
-                            onClick={() => handleCancelBooking(booking.id)}
+                            className="text-green-600"
+                            onClick={() => handleCompleteBooking(booking.id)}
                           >
-                            Cancelar reserva
+                            Finalizar reserva
                           </DropdownMenuItem>
                         </>
                       )}
+                      {booking.status !== "CANCELLED" &&
+                        booking.status !== "COMPLETED" && (
+                          <>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              className="text-red-600"
+                              onClick={() => handleCancelBooking(booking.id)}
+                            >
+                              Cancelar reserva
+                            </DropdownMenuItem>
+                          </>
+                        )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                   <DialogContent className="max-md:max-w-sm rounded-sm">

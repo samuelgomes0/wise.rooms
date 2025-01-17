@@ -19,6 +19,9 @@ const SUCCESS = {
     UPDATE_TITLE: "Reserva atualizada com sucesso! 🎉",
     UPDATE_DESCRIPTION:
       "Os detalhes da sua reserva foram atualizados com sucesso. Confira as informações revisadas para garantir que tudo está correto.",
+    COMPLETE_TITLE: "Reserva finalizada com sucesso! 🎉",
+    COMPLETE_DESCRIPTION:
+      "Sua reserva foi finalizada com sucesso. O horário da sala agora está disponível para outras reservas.",
   },
   ROOM: {
     CREATE_TITLE: "Sala criada com sucesso! 🎉",
@@ -74,6 +77,9 @@ const ERROR = {
     CONFLICT_TITLE: "Conflito de reservas! ⚠️",
     CONFLICT_DESCRIPTION:
       "Não foi possível criar a reserva, pois já existe outra reserva para o mesmo horário e local. Por favor, escolha outro horário ou sala.",
+    ALREADY_COMPLETED_TITLE: "Reserva já finalizada! 🏁",
+    ALREADY_COMPLETED_DESCRIPTION:
+      "Esta reserva já foi finalizada anteriormente. Não é possível realizar esta ação novamente.",
   },
   ROOM: {
     CREATE_TITLE: "Erro ao criar sala! ⚠️",

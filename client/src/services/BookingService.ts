@@ -66,6 +66,10 @@ class BookingService {
   async cancelBooking(bookingId: string) {
     return await apiServiceInstance.put(`/bookings/${bookingId}/cancel`);
   }
+
+  async completeBooking(bookingId: string) {
+    return await apiServiceInstance.put(`/bookings/${bookingId}/complete`);
+  }
 }
 
 const bookingServiceInstance = new BookingService();
