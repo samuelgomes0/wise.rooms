@@ -1,0 +1,26 @@
+meta {
+  name: createBooking
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{API_BASE_URL}}/bookings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtNWhldmxrbjAwMDFlY28wejlyb2l3bHYiLCJpYXQiOjE3MzcwODA4MjksImV4cCI6MTczNzA4NDQyOX0.pYDPr4a0JY7NT4HeuUts1x-rd_oE3TN8AC4udwECTZU
+}
+
+body:json {
+  {
+    "userId": "cm5hf2eqb0009eco0c8ulx8qv",
+    "roomId": 2,
+    "date": "Fri Jan 17 2025 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
+    "startTime": "22:00",
+    "endTime": "23:00",
+    "description": "Teste de concluir reserva"
+  }
+}
