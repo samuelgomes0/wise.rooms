@@ -286,9 +286,11 @@ export default function MinhasReservas() {
                       <DropdownMenuItem>
                         <DialogTrigger>Ver detalhes</DialogTrigger>
                       </DropdownMenuItem>
-                      <DropdownMenuItem disabled>
-                        Editar reserva (em breve)
-                      </DropdownMenuItem>
+                      {booking.status === "CONFIRMED" && (
+                        <DropdownMenuItem disabled>
+                          Editar reserva (em breve)
+                        </DropdownMenuItem>
+                      )}
                       {booking.status === "ACTIVE" && (
                         <>
                           <DropdownMenuSeparator />
