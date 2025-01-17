@@ -4,6 +4,7 @@ import {
   SEPARATED_DEFAULT_TIME_SLOTS,
 } from "./calendar";
 import { ERROR, SUCCESS } from "./notificationMessages";
+import ResourcesTypes from "./resourceType";
 import Role from "./role";
 
 export const Notification = {
@@ -11,4 +12,10 @@ export const Notification = {
   ERROR,
 };
 
-export { DAYS_OF_WEEK, DEFAULT_TIME_SLOTS, Role, SEPARATED_DEFAULT_TIME_SLOTS };
+export {
+  DAYS_OF_WEEK,
+  DEFAULT_TIME_SLOTS,
+  ResourcesTypes,
+  Role,
+  SEPARATED_DEFAULT_TIME_SLOTS,
+};

@@ -2,6 +2,7 @@
 
 import GenericTable from "@/components/GenericTable";
 import Pagination from "@/components/Pagination";
+import { ResourcesTypes } from "@/constants";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import auditServiceInstance from "@/services/AuditService";
 import { IAuditLog } from "@/types";
@@ -69,7 +70,7 @@ function AuditContent({
             data={paginatedAuditLogs.map((log: IAuditLog) => ({
               user: log.user.name,
               action: getActionBadge(log.action),
-              type: log.entity,
+              type: ResourcesTypes[log.entity as keyof typeof ResourcesTypes],
               entityId: log.entityId,
               date: new Date(log.createdAt).toLocaleString("pt-BR"),
             }))}
