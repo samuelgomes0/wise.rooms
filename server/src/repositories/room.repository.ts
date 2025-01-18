@@ -3,7 +3,11 @@ import { IRoom, IRoomCreateDTO, IRoomRepository } from "../interfaces";
 
 export class RoomRepository implements IRoomRepository {
   async listRooms(): Promise<IRoom[]> {
-    return await prisma.room.findMany();
+    return await prisma.room.findMany({
+      include: {
+        resources: true,
+      },
+    });
   }
 
   async findRoomById(roomId: number): Promise<IRoom | null> {

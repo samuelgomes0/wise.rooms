@@ -34,7 +34,7 @@ import roomServiceInstance from "@/services/RoomService";
 import { ApiError } from "@/types";
 import { IRoom } from "@/types/Room.interface";
 import { errorHandler, Filter } from "@/utils";
-import { MoreHorizontalIcon, SearchIcon } from "lucide-react";
+import { ListIcon, MoreHorizontalIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
@@ -167,6 +167,7 @@ export default function Salas() {
               { header: "Nome", accessor: "name" },
               { header: "Descrição", accessor: "description" },
               { header: "Capacidade", accessor: "capacity" },
+              { header: "Recursos", accessor: "resources" },
               { header: "Opções", accessor: "options" },
             ]}
             data={paginatedRooms.map((room) => ({
@@ -231,6 +232,32 @@ export default function Salas() {
                     </DialogDescription>
                   </DialogContent>
                 </Dialog>
+              ),
+              resources: (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      className="w-12 h-full"
+                      variant="ghost"
+                      aria-label="Recursos da sala"
+                    >
+                      <ListIcon />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuLabel>Recursos</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {room.resources?.length ? (
+                      room.resources.map((resource, index) => (
+                        <DropdownMenuItem key={index}>
+                          ({resource.quantity}) {resource.name}
+                        </DropdownMenuItem>
+                      ))
+                    ) : (
+                      <DropdownMenuItem disabled>Sem recursos</DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ),
             }))}
           />
