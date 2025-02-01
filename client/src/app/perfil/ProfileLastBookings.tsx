@@ -1,35 +1,39 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LoadingContext } from "@/contexts/LoadingContext";
+import { bookingServiceInstance } from "@/services";
+import { IBooking } from "@/types";
+import { getStatusBadge } from "@/utils";
+import { formatDate } from "date-fns";
+import { useContext, useEffect, useState } from "react";
 
 function ProfileLastBookings() {
-  const bookings = [
-    {
-      id: "1",
-      room: "Laboratório de Informática 1",
-      date: "18/01/2025",
-      time: "10:00 - 12:00",
-      status: "CONFIRMED" as const,
-    },
-    {
-      id: "2",
-      room: "Sala de Treinamento",
-      date: "17/01/2025",
-      time: "13:00 - 15:00",
-      status: "COMPLETED" as const,
-    },
-    {
-      id: "3",
-      room: "Espaço de Coworking",
-      date: "18/01/2025",
-      time: "08:00 - 10:00",
-      status: "CONFIRMED" as const,
-    },
-  ];
+  const [bookings, setBookings] = useState<IBooking[]>([]);
+  const { setIsLoading } = useContext(LoadingContext);
+
+  const listBookings = async () => {
+    setIsLoading(true);
+
+    try {
+      const data = await bookingServiceInstance.listBookings();
+      setBookings(data.slice(0, 3));
+    } catch (error) {
+      console.error("Error listing bookings:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    listBookings();
+  }, []);
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm border-none">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          Reservas Recentes
+        <CardTitle className="text-xl font-semibold">
+          Últimas reservas
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -40,43 +44,19 @@ function ProfileLastBookings() {
               className="flex items-center justify-between p-4 rounded-lg bg-gray-50"
             >
               <div className="space-y-1">
-                <p className="font-medium">{booking.room}</p>
+                <p className="font-medium">{booking.room.name}</p>
                 <p className="text-sm text-muted-foreground">
-                  {booking.date} • {booking.time}
+                  {formatDate(new Date(booking.date), "dd/MM/yyyy")} das{" "}
+                  {formatDate(new Date(booking.startTime), "HH:mm")} às{" "}
+                  {formatDate(new Date(booking.endTime), "HH:mm")}
                 </p>
               </div>
-              <StatusBadge status={booking.status} />
+              {getStatusBadge(booking.status)}
             </div>
           ))}
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-function StatusBadge({
-  status,
-}: {
-  status: "CONFIRMED" | "COMPLETED" | "CANCELLED";
-}) {
-  const variants = {
-    CONFIRMED: "bg-green-100 text-green-700",
-    COMPLETED: "bg-gray-100 text-gray-700",
-    CANCELLED: "bg-red-100 text-red-700",
-  };
-
-  const labels = {
-    CONFIRMED: "Confirmado",
-    COMPLETED: "Concluído",
-    CANCELLED: "Cancelado",
-  };
-
-  return (
-    <span
-      className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${variants[status]}`}
-    >
-      {labels[status]}
-    </span>
   );
 }
 
