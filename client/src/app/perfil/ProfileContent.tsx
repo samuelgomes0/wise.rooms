@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -33,19 +32,19 @@ function ProfileContent() {
           <div className="flex items-center gap-4">
             <Avatar className="w-16 h-16">
               <AvatarImage />
-              <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
+              <AvatarFallback className="text-xl">
+                {user?.name[0] || "U"}
+              </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle className="text-2xl">{user?.name}</CardTitle>
-              <Badge>
-                {user?.role.name ? (
-                  <span>
-                    {Role.label[user.role.name as keyof typeof Role.label]}
-                  </span>
-                ) : (
-                  <Skeleton className="w-24 h-3" />
-                )}
-              </Badge>
+              {user?.role.name ? (
+                <span className="text-sm text-read">
+                  {Role.label[user.role.name as keyof typeof Role.label]}
+                </span>
+              ) : (
+                <Skeleton className="w-24 h-3" />
+              )}
             </div>
           </div>
           <Button variant="outline" size="icon">

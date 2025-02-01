@@ -17,7 +17,7 @@ function ProfileLastBookings() {
 
     try {
       const data = await bookingServiceInstance.listBookings();
-      setBookings(data.slice(0, 3));
+      setBookings(data.slice(0, 5));
     } catch (error) {
       console.error("Error listing bookings:", error);
     } finally {
