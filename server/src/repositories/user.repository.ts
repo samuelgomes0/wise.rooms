@@ -6,6 +6,7 @@ const userSelect = {
   name: true,
   email: true,
   password: true,
+  createdAt: true,
   role: {
     select: {
       id: true,
