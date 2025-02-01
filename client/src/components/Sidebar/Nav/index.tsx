@@ -8,13 +8,13 @@ import {
 import { Role } from "@/constants";
 import { AuthContext } from "@/contexts/AuthContext";
 import {
+  BookOpen,
+  BoxIcon,
   CalendarIcon,
-  ClipboardCheckIcon,
-  ClipboardListIcon,
-  HammerIcon,
-  HouseIcon,
-  MapPinCheckIcon,
-  UserCog2Icon,
+  FileTextIcon,
+  HomeIcon,
+  SettingsIcon,
+  UsersIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,17 +31,17 @@ export function Nav({ onLinkClick }: { onLinkClick?: () => void }) {
     { label: "Calendário", icon: CalendarIcon, path: "/" },
     {
       label: "Minhas reservas",
-      icon: ClipboardCheckIcon,
+      icon: BookOpen,
       path: "/minhas-reservas",
     },
   ];
 
   const managementNavItems = [
-    { label: "Reservas", icon: MapPinCheckIcon, path: "/reservas" },
-    { label: "Salas", icon: HouseIcon, path: "/salas" },
-    { label: "Recursos", icon: HammerIcon, path: "/recursos" },
-    { label: "Usuários", icon: UserCog2Icon, path: "/usuarios" },
-    { label: "Auditoria", icon: ClipboardListIcon, path: "/auditoria" },
+    { label: "Reservas", icon: FileTextIcon, path: "/reservas" },
+    { label: "Salas", icon: HomeIcon, path: "/salas" },
+    { label: "Recursos", icon: BoxIcon, path: "/recursos" },
+    { label: "Usuários", icon: UsersIcon, path: "/usuarios" },
+    { label: "Auditoria", icon: SettingsIcon, path: "/auditoria" },
   ];
 
   return (

@@ -47,7 +47,9 @@ export function UserDropdown() {
           <DropdownMenuContent className="w-64 max-md:w-[calc(100vw-2rem)]">
             <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem disabled>Perfil (em breve)</DropdownMenuItem>
+            <Link href="/perfil">
+              <DropdownMenuItem>Perfil</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem disabled>
               Configurações (em breve)
             </DropdownMenuItem>
