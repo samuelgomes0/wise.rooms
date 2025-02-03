@@ -54,12 +54,12 @@ import {
   MoreHorizontalIcon,
   SearchIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
-export default function MinhasReservas() {
+export default function Reservas() {
   const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
   const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
+
   const [bookings, setBookings] = useState<IBooking[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined);
@@ -68,7 +68,8 @@ export default function MinhasReservas() {
   const itemsPerPage = 30;
 
   const { toast } = useToast();
-  const { user, isAuthenticated } = useContext(AuthContext);
+
+  const { user } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
 
   const { filteredBookings, paginatedBookings, totalPages } = Filter.bookings({
@@ -80,17 +81,11 @@ export default function MinhasReservas() {
     itemsPerPage,
   });
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isAuthenticated) return router.push("/");
-    listBookings();
-  }, []);
-
   const listBookings = async () => {
     setIsLoading(true);
+
     try {
-      const data = await bookingServiceInstance.findBookingsByUser(user?.id);
+      const data = await bookingServiceInstance.listBookings();
       setBookings(data);
     } catch (error) {
       console.error("Error listing bookings:", error);
@@ -136,6 +131,10 @@ export default function MinhasReservas() {
     listBookings();
   };
 
+  useEffect(() => {
+    listBookings();
+  }, []);
+
   return (
     <div
       className="pt-8 w-4/5 mx-auto flex flex-col justify-between h-screen"
@@ -148,8 +147,8 @@ export default function MinhasReservas() {
               <AvatarFallback>{user?.name[0] || "U"}</AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-2xl font-bold">Minhas Reservas</h1>
-              <div className="text-sm text-gray-500">
+              <h1 className="text-2xl font-bold">Reservas</h1>
+              <div className="text-sm text-read">
                 {user?.role.name ? (
                   <span>
                     {Role.label[user.role.name as keyof typeof Role.label]}
@@ -188,7 +187,7 @@ export default function MinhasReservas() {
           </div>
         </div>
         <div className="flex gap-2 max-md:flex-col">
-          <div className="flex-1 flex gap-4 relative">
+          <div className="flex-1 gap-4 relative">
             <SearchIcon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={18}
@@ -197,7 +196,7 @@ export default function MinhasReservas() {
             <SearchFilter
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
-              placeholder="Buscar por sala"
+              placeholder="Buscar por sala ou responsável"
               aria-label="Campo de busca"
             />
           </div>
@@ -252,6 +251,7 @@ export default function MinhasReservas() {
           <GenericTable
             columns={[
               { header: "Sala", accessor: "room" },
+              { header: "Responsável", accessor: "user" },
               { header: "Início", accessor: "startTime" },
               { header: "Fim", accessor: "endTime" },
               { header: "Data", accessor: "date" },
@@ -260,6 +260,7 @@ export default function MinhasReservas() {
             ]}
             data={paginatedBookings.map((booking: IBooking) => ({
               ...booking,
+              user: booking.user.name,
               room: booking.room.name,
               date: format(booking.date, "dd/MM/yyyy"),
               startTime: format(
@@ -325,6 +326,9 @@ export default function MinhasReservas() {
                     <Separator />
                     <DialogDescription className="text-back grid grid-cols-1 grid-row-3 gap-4">
                       <div className="grid grid-cols-3 items-center justify-between">
+                        <div className="flex flex-col">
+                          <strong>Usuário</strong> {booking.user.name}
+                        </div>
                         <div className="flex flex-col">
                           <strong>Sala</strong> {booking.room.name}
                         </div>
