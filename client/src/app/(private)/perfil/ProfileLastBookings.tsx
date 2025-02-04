@@ -1,16 +1,19 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AuthContext } from "@/contexts/AuthContext";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import { bookingServiceInstance } from "@/services";
 import { IBooking } from "@/types";
 import { getStatusBadge } from "@/utils";
 import { formatDate } from "date-fns";
 import { useContext, useEffect, useState } from "react";
+import ProfileLastBookingsSkeleton from "./ProfileLastBookingsSkeleton";
 
 function ProfileLastBookings() {
-  const [bookings, setBookings] = useState<IBooking[]>([]);
+  const [bookings, setBookings] = useState<IBooking[]>(null);
   const { setIsLoading } = useContext(LoadingContext);
+  const { user } = useContext(AuthContext);
 
   const listBookings = async () => {
     setIsLoading(true);
@@ -29,6 +32,10 @@ function ProfileLastBookings() {
     listBookings();
   }, []);
 
+  if (!bookings) {
+    return <ProfileLastBookingsSkeleton />;
+  }
+
   return (
     <Card className="shadow-sm border-none">
       <CardHeader>
@@ -41,7 +48,7 @@ function ProfileLastBookings() {
           {bookings.map((booking) => (
             <div
               key={booking.id}
-              className="flex items-center justify-between p-4 rounded-lg bg-gray-50"
+              className="flex items-center justify-between p-4 rounded-lg bg-gray-50 shadow-sm"
             >
               <div className="space-y-1">
                 <p className="font-medium">{booking.room.name}</p>
